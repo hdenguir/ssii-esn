@@ -4,7 +4,7 @@ import { withFormik } from "formik";
 import * as Yup from "yup";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import PropTypes from "prop-types";
+//import PropTypes from "prop-types";
 
 import { setAlert } from "../../actions/alert";
 import { register } from "../../actions/auth";
