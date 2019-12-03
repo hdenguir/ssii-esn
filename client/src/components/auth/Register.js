@@ -129,15 +129,12 @@ const formRegister = withFormik({
   }
 })(Register);
 
-formRegister.PropTypes = {
-  setAlert: PropTypes.func.isRequired,
-  register: PropTypes.func.isRequired
-};
+// Register.PropTypes = {
+//   setAlert: PropTypes.func.isRequired,
+//   register: PropTypes.func.isRequired
+// };
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated
 });
-export default connect(
-  mapStateToProps,
-  { setAlert, register }
-)(formRegister);
+export default connect(mapStateToProps, { setAlert, register })(formRegister);

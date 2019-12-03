@@ -17,9 +17,10 @@ router.get("/", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     res.status(200).json(user);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Server Error");
+  } catch (err) {
+    return res.status(400).json({
+      errors: [{ msg: err.message }]
+    });
   }
 });
 
@@ -81,8 +82,9 @@ router.post(
 
       //res.send("User Created ");
     } catch (err) {
-      console.log(err.message);
-      res.status(400).send("Server error");
+      return res.status(400).json({
+        errors: [{ msg: err.message }]
+      });
     }
   }
 );

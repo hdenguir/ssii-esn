@@ -53,8 +53,9 @@ const Login = props => {
         </div>
         <input type="submit" className="btn btn-primary" value="Login" />
       </form>
+
       <p className="my-1">
-        Already have an account? <Link to="/login">Sign In</Link>
+        Don't have an account? <Link to="/register">Sign Up</Link>
       </p>
     </Fragment>
   );
@@ -85,7 +86,4 @@ const loginForm = withFormik({
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated
 });
-export default connect(
-  mapStateToProps,
-  { login }
-)(loginForm);
+export default connect(mapStateToProps, { login })(loginForm);
