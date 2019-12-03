@@ -14,8 +14,9 @@ const connectDB = async () => {
     });
     console.log("MongoDB Connected ....");
   } catch (err) {
+    console.log("========= MongoDB Disconnected ....======");
     console.log(err.message);
-    process.exit(1);
+    //process.exit(1);
   }
 };
 
