@@ -4,9 +4,6 @@ const config = require("config");
 
 const db = config.get("mongoURI");
 
-console.log("============db===============");
-console.log(db);
-
 const connectDB = async () => {
   try {
     await mongoose.connect(db, {
@@ -17,12 +14,9 @@ const connectDB = async () => {
     });
     console.log("MongoDB Connected ....");
   } catch (err) {
-    console.log("========= MongoDB Disconnected ....======");
+    console.log("MongoDB Disconnected ....");
     console.log(err.message);
-    return {
-      errors: [{ msg: err.message }]
-    };
-    //process.exit(1);
+    process.exit(1);
   }
 };
 
