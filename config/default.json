@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://mysocialy123:mysocialy123@cluster0-7vrxx.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtSecret": "mysecrecttoekn",
+  "GithubClientID": "6dd8697e7a2b03e27fb9",
+  "GithubClientSecret": "8ad929c71c55d60e17c08ed4a1569b25bcf426cf"
+}
