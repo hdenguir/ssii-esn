@@ -8,6 +8,7 @@ import Landing from "./components/layout/Landing";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Alert from "./components/layout/Alert";
+import NotFound from "./components/layout/NotFound";
 import Dashboard from "./components/dashboard/Dashboard";
 import CreateProfile from "./components/profile-forms/CreateProfile";
 import EditProfile from "./components/profile-forms/EditProfile";
@@ -56,6 +57,7 @@ const App = () => {
               <PrivateRoute path="/add-education" component={AddEducation} />
               <PrivateRoute path="/posts" component={Posts} />
               <PrivateRoute path="/post/:id" component={PostSingle} />
+              <Route component={NotFound} />
             </Switch>
           </section>
         </Fragment>

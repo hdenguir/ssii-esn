@@ -8,6 +8,7 @@ import { Redirect } from "react-router-dom";
 
 import { setAlert } from "../../actions/alert";
 import { register } from "../../actions/auth";
+import Spinner from "../layout/Spinner";
 
 const Register = props => {
   const {
@@ -15,12 +16,20 @@ const Register = props => {
     handleSubmit,
     handleChange,
     errors,
+    touched,
     isSubmitting,
-    isAuthenticated
+    isAuthenticated,
+    loading
   } = props;
+
   if (isAuthenticated) {
     return <Redirect to="/dashboard" />;
   }
+
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <Fragment>
       <h1 className="large text-primary">Sign Up</h1>
@@ -36,7 +45,7 @@ const Register = props => {
             value={values.name}
             onChange={e => handleChange(e)}
           />
-          {errors.name && (
+          {errors.name && touched.name && (
             <span className="alert alert-danger">{errors.name}</span>
           )}
         </div>
@@ -48,7 +57,7 @@ const Register = props => {
             value={values.email}
             onChange={e => handleChange(e)}
           />
-          {errors.email && (
+          {errors.email && touched.email && (
             <span className="alert alert-danger">{errors.email}</span>
           )}
           <small className="form-text">
@@ -65,7 +74,7 @@ const Register = props => {
             onChange={e => handleChange(e)}
           />
 
-          {errors.password && (
+          {errors.password && touched.password && (
             <span className="alert alert-danger">{errors.password}</span>
           )}
         </div>
@@ -77,7 +86,7 @@ const Register = props => {
             value={values.passwordConfirm}
             onChange={e => handleChange(e)}
           />
-          {errors.passwordConfirm && (
+          {errors.passwordConfirm && touched.passwordConfirm && (
             <span className="alert alert-danger">{errors.passwordConfirm}</span>
           )}
         </div>
@@ -97,10 +106,10 @@ const Register = props => {
 
 const formRegister = withFormik({
   mapPropsToValues: () => ({
-    name: "hfd deng",
-    email: "haf2com@gmail.com",
-    password: "test123",
-    passwordConfirm: "test123"
+    name: "",
+    email: "",
+    password: "",
+    passwordConfirm: ""
   }),
   validationSchema: Yup.object().shape({
     name: Yup.string()
@@ -135,6 +144,7 @@ const formRegister = withFormik({
 // };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  loading: state.auth.loading
 });
 export default connect(mapStateToProps, { setAlert, register })(formRegister);

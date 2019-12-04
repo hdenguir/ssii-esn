@@ -5,12 +5,25 @@ import * as Yup from "yup";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { login } from "../../actions/auth";
+import Spinner from "../layout/Spinner";
 
 const Login = props => {
-  const { values, handleSubmit, handleChange, errors, isAuthenticated } = props;
+  const {
+    values,
+    handleSubmit,
+    handleChange,
+    errors,
+    touched,
+    isAuthenticated,
+    loading
+  } = props;
 
   if (isAuthenticated) {
     return <Redirect to="/dashboard" />;
+  }
+
+  if (loading) {
+    return <Spinner />;
   }
 
   return (
@@ -19,12 +32,6 @@ const Login = props => {
       <p className="lead">
         <i className="fas fa-user"></i> Create Your Account
       </p>
-      {values.showAlert && (
-        <p className="alert alert-success">
-          <i className="fas fa-user"></i> You are logged.
-        </p>
-      )}
-      {values.error && <p className="alert alert-danger">{values.error.msg}</p>}
       <form className="form" onSubmit={e => handleSubmit(e)}>
         <div className="form-group">
           <input
@@ -34,7 +41,7 @@ const Login = props => {
             value={values.email}
             onChange={e => handleChange(e)}
           />
-          {errors.email && (
+          {errors.email && touched.email && (
             <span className="alert alert-danger">{errors.email}</span>
           )}
         </div>
@@ -47,7 +54,7 @@ const Login = props => {
             onChange={e => handleChange(e)}
           />
 
-          {errors.password && (
+          {errors.password && touched.password && (
             <span className="alert alert-danger">{errors.password}</span>
           )}
         </div>
@@ -84,6 +91,7 @@ const loginForm = withFormik({
 })(Login);
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  loading: state.auth.loading
 });
 export default connect(mapStateToProps, { login })(loginForm);
