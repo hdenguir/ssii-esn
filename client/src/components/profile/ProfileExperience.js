@@ -1,12 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Moment from "react-moment";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Moment from 'react-moment';
+import { useTranslation } from 'react-i18next';
 
 const ProfileExperience = ({ profile: { experience } }) => {
+  const { t, i18 } = useTranslation();
   return (
     <>
       <div className="profile-exp bg-white p-2">
-        <h2 className="text-primary">Experience</h2>
+        <h2 className="text-primary">{t('ExperienceCredentials')}</h2>
         {experience.length > 0 ? (
           experience.map(exp => (
             <div key={exp._id}>
@@ -14,7 +16,7 @@ const ProfileExperience = ({ profile: { experience } }) => {
               <p>
                 <Moment format="MMM YYYY">{exp.from}</Moment> -
                 {!exp.to ? (
-                  "Current"
+                  'Current'
                 ) : (
                   <Moment format="MMM YYYY">{exp.to}</Moment>
                 )}
@@ -30,10 +32,9 @@ const ProfileExperience = ({ profile: { experience } }) => {
             </div>
           ))
         ) : (
-          <p>No experience exists !!!</p>
+          <p>{t('NoExperience')} !!!</p>
         )}
       </div>
-      }
     </>
   );
 };

@@ -1,14 +1,16 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { getPost } from "../../actions/post";
-import PostItem from "./PostItem";
-import CommentForm from "./CommentForm";
-import CommentsList from "./CommentsList";
-import Spinner from "../layout/Spinner";
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getPost } from '../../actions/post';
+import PostItem from './PostItem';
+import CommentForm from './CommentForm';
+import CommentsList from './CommentsList';
+import Spinner from '../layout/Spinner';
+import { useTranslation } from 'react-i18next';
 
 const PostSingle = ({ getPost, post: { post, loading }, match }) => {
+  const { t, i18n } = useTranslation();
   useEffect(() => {
     getPost(match.params.id);
   }, [getPost, match.params.id]);
@@ -17,7 +19,7 @@ const PostSingle = ({ getPost, post: { post, loading }, match }) => {
   ) : (
     <>
       <Link to="/posts" className="btn">
-        Back To Posts
+        {t('BackPosts')}
       </Link>
       <PostItem post={post} showActions={false} />
       <CommentForm postId={match.params.id} />
@@ -34,7 +36,4 @@ PostSingle.propTypes = {
 const mapStateToProps = state => ({
   post: state.post
 });
-export default connect(
-  mapStateToProps,
-  { getPost }
-)(PostSingle);
+export default connect(mapStateToProps, { getPost })(PostSingle);

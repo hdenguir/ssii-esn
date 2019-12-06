@@ -1,19 +1,19 @@
-import React, { Fragment, useEffect } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-
-import Spinner from "../layout/Spinner";
+import React, { Fragment, useEffect } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import Spinner from '../layout/Spinner';
 
 import {
   getCurrentProfile,
   deleteProfileItem,
   deleteAcount
-} from "../../actions/profile";
+} from '../../actions/profile';
 
-import DashboardActions from "./DashboardActions";
-import ListExperiences from "./ListExperiences";
-import ListEducations from "./ListEducations";
+import DashboardActions from './DashboardActions';
+import ListExperiences from './ListExperiences';
+import ListEducations from './ListEducations';
 
 const Dashboard = ({
   getCurrentProfile,
@@ -22,6 +22,7 @@ const Dashboard = ({
   deleteProfileItem,
   deleteAcount
 }) => {
+  const { t, i18n } = useTranslation();
   useEffect(() => {
     getCurrentProfile();
   }, [loading, getCurrentProfile]);
@@ -29,10 +30,10 @@ const Dashboard = ({
     <Spinner />
   ) : (
     <Fragment>
-      <h1 className="large text-primary">Dashboard</h1>
+      <h1 className="large text-primary">{t('Dashboard')}</h1>
       <p className="lead">
-        {" "}
-        <i className="fas fa-user"></i> Welcome{" "}
+        {' '}
+        <i className="fas fa-user"></i> {t('Welcome')}{' '}
         <strong>{user && user.name.toUpperCase()}</strong>
       </p>
       {profile !== null ? (
@@ -48,7 +49,7 @@ const Dashboard = ({
           />
           <div className="my-2">
             <button className="btn btn-danger" onClick={() => deleteAcount()}>
-              <i className="fas fa-user-minus"></i> Delete Account
+              <i className="fas fa-user-minus"></i> {t('DeleteAccount')}
             </button>
           </div>
         </Fragment>
@@ -56,7 +57,7 @@ const Dashboard = ({
         <Fragment>
           <p>You have not yet setup a profile, please add some infos</p>
           <Link to="/create-profile" className="btn btn-primary my-1">
-            Create profile
+            {t('CreateProfile')}
           </Link>
         </Fragment>
       )}
@@ -76,7 +77,8 @@ const mapStateToProps = state => ({
   auth: state.auth,
   profile: state.profile
 });
-export default connect(
-  mapStateToProps,
-  { getCurrentProfile, deleteProfileItem, deleteAcount }
-)(Dashboard);
+export default connect(mapStateToProps, {
+  getCurrentProfile,
+  deleteProfileItem,
+  deleteAcount
+})(Dashboard);

@@ -1,34 +1,39 @@
-import React, { Fragment, useEffect } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React, { Fragment, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
-import { getProfiles } from "../../actions/profile";
-import ProfileItem from "./ProfileItem";
+import { getProfiles } from '../../actions/profile';
+import ProfileItem from './ProfileItem';
 
-import Spinner from "../layout/Spinner";
+import Spinner from '../layout/Spinner';
 
 const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
+  const { t, i18n } = useTranslation();
   useEffect(() => {
     getProfiles();
   }, [loading, getProfiles]);
   const profilesList =
-    profiles.length &&
+    profiles.length > 0 &&
     profiles.map(profile => (
       <ProfileItem key={profile._id} profile={profile} />
     ));
   return (
     <Fragment>
-      {loading ? (
+      {profiles.length === 0 && loading ? (
         <Spinner />
       ) : (
         <>
-          <h1 className="large text-primary">Developers</h1>
+          <h1 className="large text-primary">{t('Developers')}</h1>
           <p className="lead">
-            <i className="fab fa-connectdevelop"></i> Browse and connect with
-            developers
+            <i className="fab fa-connectdevelop"></i> {t('BrowseDevelopers')}
           </p>
           <div className="profiles">
-            {profiles.length ? profilesList : <p>No profiles found ...</p>}
+            {profiles.length > 0 ? (
+              profilesList
+            ) : (
+              <p>{t('NoProfilesFound')} ...</p>
+            )}
           </div>
         </>
       )}
@@ -43,7 +48,4 @@ Profiles.propTypes = {
 const mapStateToProps = state => ({
   profile: state.profile
 });
-export default connect(
-  mapStateToProps,
-  { getProfiles }
-)(Profiles);
+export default connect(mapStateToProps, { getProfiles })(Profiles);

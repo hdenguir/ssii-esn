@@ -1,13 +1,15 @@
-import React, { Fragment } from "react";
-import { Link, withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { updateProfile } from "../../actions/profile";
+import React, { Fragment } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { updateProfile } from '../../actions/profile';
 
-import { withFormik } from "formik";
-import * as Yup from "yup";
+import { withFormik } from 'formik';
+import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
 
 const AddEducation = props => {
+  const { t, i18n } = useTranslation();
   const {
     values: { school, degree, fieldofstudy, from, to, current, description },
     handleSubmit,
@@ -16,41 +18,41 @@ const AddEducation = props => {
   } = props;
   return (
     <Fragment>
-      <h1 className="large text-primary">Add Your Education</h1>
+      <h1 className="large text-primary">{t('AddEducation')}</h1>
       <p className="lead">
-        <i className="fas fa-graduation-cap"></i> Add any school, bootcamp, etc
-        that you have attended
+        <i className="fas fa-graduation-cap"></i>
+        {t('AddEducationIntro')}
       </p>
-      <small>* = required field</small>
+      <small>* = {t('required')}</small>
       <form className="form" onSubmit={e => handleSubmit(e)}>
         <div className="form-group">
           <input
             type="text"
-            placeholder="* School or Bootcamp"
+            placeholder={t('SchoolOrBootcamp')}
             name="school"
             value={school}
             onChange={e => handleChange(e)}
           />
           {errors.school && (
-            <span className="alert alert-danger">{errors.school}</span>
+            <span className="alert alert-danger">{t(errors.school)}</span>
           )}
         </div>
         <div className="form-group">
           <input
             type="text"
-            placeholder="* Degree or Certificate"
+            placeholder={t('DegreeOrCertificate')}
             name="degree"
             value={degree}
             onChange={e => handleChange(e)}
           />
           {errors.degree && (
-            <span className="alert alert-danger">{errors.degree}</span>
+            <span className="alert alert-danger">{t(errors.degree)}</span>
           )}
         </div>
         <div className="form-group">
           <input
             type="text"
-            placeholder="Field Of Study"
+            placeholder={t('FieldOfStudy')}
             name="fieldofstudy"
             value={fieldofstudy}
             onChange={e => handleChange(e)}
@@ -65,7 +67,7 @@ const AddEducation = props => {
             onChange={e => handleChange(e)}
           />
           {errors.from && (
-            <span className="alert alert-danger">{errors.from}</span>
+            <span className="alert alert-danger">{t(errors.from)}</span>
           )}
         </div>
         <div className="form-group">
@@ -75,7 +77,7 @@ const AddEducation = props => {
               name="current"
               value={current}
               onChange={e => handleChange(e)}
-            />{" "}
+            />{' '}
             Current School or Bootcamp
           </p>
         </div>
@@ -93,14 +95,18 @@ const AddEducation = props => {
             name="description"
             cols="30"
             rows="5"
-            placeholder="Program Description"
+            placeholder={t('ProgramDescription')}
             value={description}
             onChange={e => handleChange(e)}
           ></textarea>
         </div>
-        <input type="submit" className="btn btn-primary my-1" />
+        <input
+          type="submit"
+          className="btn btn-primary my-1"
+          value={t('Submit')}
+        />
         <Link className="btn btn-light my-1" to="/dashboard">
-          Go Back
+          {t('GoBack')}
         </Link>
       </form>
     </Fragment>
@@ -109,19 +115,19 @@ const AddEducation = props => {
 
 const FormExperience = withFormik({
   mapPropsToValues: () => ({
-    school: "",
-    degree: "",
-    fieldofstudy: "",
-    from: "",
-    to: "",
+    school: '',
+    degree: '',
+    fieldofstudy: '',
+    from: '',
+    to: '',
     current: false,
-    description: ""
+    description: ''
   }),
   validationSchema: Yup.object().shape({
-    school: Yup.string().required("School is required"),
-    degree: Yup.string().required("Degree is required"),
-    fieldofstudy: Yup.string().required("Field of study is required"),
-    from: Yup.string().required("From is required")
+    school: Yup.string().required(),
+    degree: Yup.string().required(),
+    fieldofstudy: Yup.string().required(),
+    from: Yup.string().required()
   }),
   handleSubmit: async (values, { setSubmitting, setFieldValue, props }) => {
     const {
@@ -142,7 +148,7 @@ const FormExperience = withFormik({
       current,
       description
     };
-    props.updateProfile(newEducation, props.history, "Education");
+    props.updateProfile(newEducation, props.history, 'Education');
   }
 })(AddEducation);
 
@@ -150,7 +156,4 @@ AddEducation.propTypes = {
   updateProfile: PropTypes.func.isRequired
 };
 
-export default connect(
-  null,
-  { updateProfile }
-)(withRouter(FormExperience));
+export default connect(null, { updateProfile })(withRouter(FormExperience));

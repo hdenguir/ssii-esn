@@ -8,6 +8,7 @@ const ProfileTop = ({
     status,
     location,
     githubusername,
+    website,
     social: {
       twitter = "",
       facebook = "",
@@ -26,8 +27,8 @@ const ProfileTop = ({
       </p>
       <p>{location}</p>
       <div className="icons my-1">
-        {githubusername && (
-          <a href={githubusername} target="_blank" rel="noopener noreferrer">
+        {website && (
+          <a href={website} target="_blank" rel="noopener noreferrer">
             <i className="fas fa-globe fa-2x"></i>
           </a>
         )}

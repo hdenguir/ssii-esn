@@ -1,16 +1,27 @@
-import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
-import { withFormik } from "formik";
-import * as Yup from "yup";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { withFormik } from 'formik';
+import * as Yup from 'yup';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 //import PropTypes from "prop-types";
 
-import { setAlert } from "../../actions/alert";
-import { register } from "../../actions/auth";
-import Spinner from "../layout/Spinner";
-
+import { setAlert } from '../../actions/alert';
+import { register } from '../../actions/auth';
+import Spinner from '../layout/Spinner';
+Yup.setLocale({
+  mixed: {
+    required: 'required',
+    oneOf: 'equalTo'
+  },
+  string: {
+    min: 'minlength',
+    email: 'email'
+  }
+});
 const Register = props => {
+  const { t, i18n } = useTranslation();
   const {
     values,
     handleSubmit,
@@ -32,9 +43,9 @@ const Register = props => {
 
   return (
     <Fragment>
-      <h1 className="large text-primary">Sign Up</h1>
+      <h1 className="large text-primary">{t('SignUp')}</h1>
       <p className="lead">
-        <i className="fas fa-user"></i> Create Your Account
+        <i className="fas fa-user"></i> {t('CreateAccount')}
       </p>
       <form className="form" onSubmit={e => handleSubmit(e)}>
         <div className="form-group">
@@ -46,24 +57,23 @@ const Register = props => {
             onChange={e => handleChange(e)}
           />
           {errors.name && touched.name && (
-            <span className="alert alert-danger">{errors.name}</span>
+            <span className="alert alert-danger">
+              {t(errors.name, { min: 3 })}
+            </span>
           )}
         </div>
         <div className="form-group">
           <input
             type="email"
-            placeholder="Email Address"
+            placeholder={t('EmailAddress')}
             name="email"
             value={values.email}
             onChange={e => handleChange(e)}
           />
           {errors.email && touched.email && (
-            <span className="alert alert-danger">{errors.email}</span>
+            <span className="alert alert-danger">{t(errors.email)}</span>
           )}
-          <small className="form-text">
-            This site uses Gravatar so if you want a profile image, use a
-            Gravatar email
-          </small>
+          <small className="form-text">{t('AvatarMessage')}</small>
         </div>
         <div className="form-group">
           <input
@@ -75,7 +85,9 @@ const Register = props => {
           />
 
           {errors.password && touched.password && (
-            <span className="alert alert-danger">{errors.password}</span>
+            <span className="alert alert-danger">
+              {t(errors.password, { min: 6 })}
+            </span>
           )}
         </div>
         <div className="form-group">
@@ -87,7 +99,9 @@ const Register = props => {
             onChange={e => handleChange(e)}
           />
           {errors.passwordConfirm && touched.passwordConfirm && (
-            <span className="alert alert-danger">{errors.passwordConfirm}</span>
+            <span className="alert alert-danger">
+              {t(errors.passwordConfirm, { min: 6 })}
+            </span>
           )}
         </div>
         <input
@@ -98,7 +112,7 @@ const Register = props => {
         />
       </form>
       <p className="my-1">
-        Already have an account? <Link to="/login">Sign In</Link>
+        {t('HaveAccount')} <Link to="/login">{t('Login')}</Link>
       </p>
     </Fragment>
   );
@@ -106,22 +120,25 @@ const Register = props => {
 
 const formRegister = withFormik({
   mapPropsToValues: () => ({
-    name: "",
-    email: "",
-    password: "",
-    passwordConfirm: ""
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirm: ''
   }),
   validationSchema: Yup.object().shape({
     name: Yup.string()
-      .min(3, "Your name is longer than that")
-      .required("Name is required"),
+      .min(3)
+      .required(),
     email: Yup.string()
-      .email("Enter a valid email")
-      .required("Email is required"),
-    password: Yup.string().required("Password is required"),
+      .email()
+      .required(),
+    password: Yup.string()
+      .min(6)
+      .required(),
     passwordConfirm: Yup.string()
-      .oneOf([Yup.ref("password"), null])
-      .required("Password confirm is required")
+      .min(6)
+      .oneOf([Yup.ref('password'), null])
+      .required() //'Password confirm is required'
   }),
   handleSubmit: async (values, { props, setSubmitting, setFieldValue }) => {
     const { register } = props;

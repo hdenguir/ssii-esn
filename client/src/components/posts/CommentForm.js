@@ -1,10 +1,15 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { withFormik } from "formik";
-import * as Yup from "yup";
-import { addComment, deleteComment } from "../../actions/post";
-
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
+import * as Yup from 'yup';
+import { addComment, deleteComment } from '../../actions/post';
+Yup.setLocale({
+  mixed: {
+    required: 'required'
+  }
+});
 const CommentForm = ({
   values,
   errors,
@@ -12,23 +17,28 @@ const CommentForm = ({
   handleSubmit,
   handleChange
 }) => {
+  const { t, i18n } = useTranslation();
   return (
     <div className="post-form">
       <div className="bg-primary p">
-        <h3>Leave A Comment</h3>
+        <h3>{t('LeaveComment')}</h3>
       </div>
       <form className="form my-1" onSubmit={e => handleSubmit(e)}>
         <textarea
           name="text"
           cols="30"
           rows="5"
-          placeholder="Comment on this post"
+          placeholder={t('CommentPost')}
           value={values.text}
           onChange={e => handleChange(e)}
         ></textarea>
-        <input type="submit" className="btn btn-dark my-1" value="Submit" />
+        <input
+          type="submit"
+          className="btn btn-dark my-1"
+          value={t('Submit')}
+        />
         {errors.text && touched.text && (
-          <span className="alert alert-danger">{errors.text}</span>
+          <span className="alert alert-danger">{t(errors.text)}</span>
         )}
       </form>
     </div>
@@ -37,10 +47,10 @@ const CommentForm = ({
 
 const FormComment = withFormik({
   mapPropsToValues: () => ({
-    text: ""
+    text: ''
   }),
   validationSchema: Yup.object().shape({
-    text: Yup.string().required("Text is required")
+    text: Yup.string().required()
   }),
   handleSubmit: async (
     values,
@@ -59,7 +69,4 @@ CommentForm.propTypes = {
   deleteComment: PropTypes.func.isRequired
 };
 
-export default connect(
-  null,
-  { addComment, deleteComment }
-)(FormComment);
+export default connect(null, { addComment, deleteComment })(FormComment);

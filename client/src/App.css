@@ -15,7 +15,7 @@
 }
 
 body {
-  font-family: "Raleway", sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
   background-color: #fff;
@@ -40,9 +40,9 @@ img {
   max-width: 1100px;
   margin: auto;
   overflow: hidden;
-  padding: 0 2rem;
-  margin-top: 6rem;
-  margin-bottom: 3rem;
+  padding: 6rem 2rem;
+  /* margin-top: 6rem;
+  margin-bottom: 3rem; */
 }
 
 /* Text Styles*/
@@ -56,6 +56,10 @@ img {
   font-size: 3rem;
   line-height: 1.2;
   margin-bottom: 1rem;
+}
+
+.md {
+  font-size: 1.5rem;
 }
 
 .lead {
@@ -155,6 +159,7 @@ img {
   opacity: 0.9;
   background: var(--light-color);
   color: #333;
+  transition: all 1s;
 }
 
 .btn-primary,
@@ -246,10 +251,10 @@ img {
   color: #888;
 }
 
-.form input[type="text"],
-.form input[type="email"],
-.form input[type="password"],
-.form input[type="date"],
+.form input[type='text'],
+.form input[type='email'],
+.form input[type='password'],
+.form input[type='date'],
 .form select,
 .form textarea {
   display: block;
@@ -259,7 +264,7 @@ img {
   border: 1px solid #ccc;
 }
 
-.form input[type="submit"],
+.form input[type='submit'],
 button {
   font: inherit;
 }
@@ -316,6 +321,9 @@ button {
 .navbar ul {
   display: flex;
 }
+.navbar h1 + ul {
+  margin-left: auto;
+}
 
 .navbar a {
   color: #fff;
@@ -334,8 +342,9 @@ button {
 /* Landing Page */
 .landing {
   position: relative;
-  background: url("./img/showcase.jpg") no-repeat center center/cover;
+  background: url('./img/showcase.jpg') no-repeat center center/cover;
   height: 100vh;
+  margin: -6rem -2rem;
 }
 
 .landing-inner {
@@ -365,10 +374,10 @@ button {
 .profile-grid {
   display: grid;
   grid-template-areas:
-    "top top"
-    "about about"
-    "exp edu"
-    "github github";
+    'top top'
+    'about about'
+    'exp edu'
+    'github github';
   grid-gap: 1rem;
 }
 
@@ -551,11 +560,11 @@ button {
 
   .profile-grid {
     grid-template-areas:
-      "top"
-      "about"
-      "exp"
-      "edu"
-      "github";
+      'top'
+      'about'
+      'exp'
+      'edu'
+      'github';
   }
 
   .profile-about .skills {

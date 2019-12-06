@@ -1,50 +1,52 @@
-import React, { Fragment } from "react";
-import { Link, withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { updateProfile } from "../../actions/profile";
-
-import { withFormik } from "formik";
-import * as Yup from "yup";
+import React, { Fragment } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { updateProfile } from '../../actions/profile';
+import { useTranslation } from 'react-i18next';
+import { withFormik } from 'formik';
+import * as Yup from 'yup';
 
 const AddExperience = props => {
+  const { t, i18n } = useTranslation();
   const {
     values: { title, company, location, from, to, current, description },
     handleSubmit,
     handleChange,
+    touched,
     errors
   } = props;
   return (
     <Fragment>
-      <h1 className="large text-primary">Add An Experience</h1>
+      <h1 className="large text-primary">{t('AddExperience')}</h1>
       <p className="lead">
-        <i className="fas fa-code-branch"></i> Add any developer/programming
-        positions that you have had in the past
+        <i className="fas fa-code-branch"></i>
+        {t('AddExperienceIntro')}
       </p>
-      <small>* = required field</small>
+      <small>* = {t('required')}</small>
       <form className="form" onSubmit={e => handleSubmit(e)}>
         <div className="form-group">
           <input
             type="text"
-            placeholder="* Job Title"
+            placeholder={t('JobTitle')}
             name="title"
             value={title}
             onChange={e => handleChange(e)}
           />
-          {errors.title && (
-            <span className="alert alert-danger">{errors.title}</span>
+          {errors.title && touched.title && (
+            <span className="alert alert-danger">{t(errors.title)}</span>
           )}
         </div>
         <div className="form-group">
           <input
             type="text"
-            placeholder="* Company"
+            placeholder={t('Company')}
             name="company"
             value={company}
             onChange={e => handleChange(e)}
           />
-          {errors.company && (
-            <span className="alert alert-danger">{errors.company}</span>
+          {errors.company && touched.company && (
+            <span className="alert alert-danger">{t(errors.company)}</span>
           )}
         </div>
         <div className="form-group">
@@ -57,15 +59,15 @@ const AddExperience = props => {
           />
         </div>
         <div className="form-group">
-          <h4>From Date</h4>
+          <h4>{t('FromDate')}</h4>
           <input
             type="date"
             name="from"
             value={from}
             onChange={e => handleChange(e)}
           />
-          {errors.from && (
-            <span className="alert alert-danger">{errors.from}</span>
+          {errors.from && touched.from && (
+            <span className="alert alert-danger">{t(errors.from)}</span>
           )}
         </div>
         <div className="form-group">
@@ -75,32 +77,39 @@ const AddExperience = props => {
               name="current"
               value={current}
               onChange={e => handleChange(e)}
-            />{" "}
-            Current Job
+            />{' '}
+            Current
           </p>
         </div>
         <div className="form-group">
-          <h4>To Date</h4>
+          <h4>{t('ToDate')}</h4>
           <input
             type="date"
             name="to"
             value={to}
             onChange={e => handleChange(e)}
           />
+          {errors.to && touched.to && (
+            <span className="alert alert-danger">{t(errors.to)}</span>
+          )}
         </div>
         <div className="form-group">
           <textarea
             name="description"
             cols="30"
             rows="5"
-            placeholder="Job Description"
+            placeholder={t('JobDescription')}
             value={description}
             onChange={e => handleChange(e)}
           ></textarea>
         </div>
-        <input type="submit" className="btn btn-primary my-1" />
+        <input
+          type="submit"
+          className="btn btn-primary my-1"
+          value={t('Submit')}
+        />
         <Link className="btn btn-light my-1" to="/dashboard">
-          Go Back
+          {t('GoBack')}
         </Link>
       </form>
     </Fragment>
@@ -109,18 +118,23 @@ const AddExperience = props => {
 
 const FormExperience = withFormik({
   mapPropsToValues: () => ({
-    title: "",
-    company: "",
-    location: "",
-    from: "",
-    to: "",
+    title: '',
+    company: '',
+    location: '',
+    from: '',
+    to: '',
     current: false,
-    description: ""
+    description: ''
   }),
   validationSchema: Yup.object().shape({
-    title: Yup.string().required("Title is required"),
-    company: Yup.string().required("Company is required"),
-    from: Yup.string().required("From is required")
+    title: Yup.string().required('Title is required'),
+    company: Yup.string().required('Company is required'),
+    from: Yup.date().required('From is required'),
+    to: Yup.date().when(
+      'from',
+      (from, schema) =>
+        from && schema.min(from, `Please enter a date greater than: ${from}.`)
+    )
   }),
   handleSubmit: async (values, { setSubmitting, setFieldValue, props }) => {
     const { title, company, location, from, to, current, description } = values;
@@ -133,7 +147,7 @@ const FormExperience = withFormik({
       current,
       description
     };
-    props.updateProfile(newExperience, props.history, "Experience");
+    props.updateProfile(newExperience, props.history, 'Experience');
   }
 })(AddExperience);
 
@@ -141,7 +155,4 @@ AddExperience.propTypes = {
   updateProfile: PropTypes.func.isRequired
 };
 
-export default connect(
-  null,
-  { updateProfile }
-)(withRouter(FormExperience));
+export default connect(null, { updateProfile })(withRouter(FormExperience));

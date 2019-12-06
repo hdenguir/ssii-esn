@@ -153,13 +153,17 @@ router.get("/user/:user_id", async (req, res) => {
     }).populate("user", ["name", "avatar"]);
 
     if (!profile)
-      return res.status(400).json({ msg: "There is no profile for this user" });
+      return res.status(400).json({
+        errors: [{ msg: "There is no profile for this user" }]
+      });
 
     res.status(200).json(profile);
   } catch (err) {
     console.log(err);
     if (err.kind == "ObjectId")
-      return res.status(400).json({ msg: "Profile not found" });
+      return res.status(400).json({
+        errors: [{ msg: "Profile not found" }]
+      });
 
     return res.status(400).json({
       errors: [{ msg: err.message }]

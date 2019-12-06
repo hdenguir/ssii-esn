@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { getPosts } from "../../actions/post";
-import Spinner from "../layout/Spinner";
-import PostItem from "./PostItem";
-import PostForm from "./PostForm";
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getPosts } from '../../actions/post';
+import Spinner from '../layout/Spinner';
+import PostItem from './PostItem';
+import PostForm from './PostForm';
+import { useTranslation } from 'react-i18next';
 
 const Posts = ({ getPosts, posts, loading }) => {
+  const { t, i18n } = useTranslation();
   useEffect(() => {
     getPosts();
   }, [getPosts]);
@@ -15,9 +17,9 @@ const Posts = ({ getPosts, posts, loading }) => {
     <Spinner />
   ) : (
     <>
-      <h1 className="large text-primary">Posts</h1>
+      <h1 className="large text-primary">{t('Posts')}</h1>
       <p className="lead">
-        <i className="fas fa-user"></i> Welcome to the community!
+        <i className="fas fa-user"></i> {t('WelcomeCommunity')}
       </p>
       <PostForm />
       <div className="posts">
@@ -37,7 +39,4 @@ const mapStateToProps = state => ({
   posts: state.post.posts,
   loading: state.post.loading
 });
-export default connect(
-  mapStateToProps,
-  { getPosts }
-)(Posts);
+export default connect(mapStateToProps, { getPosts })(Posts);

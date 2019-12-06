@@ -1,14 +1,16 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
-import { getGithubRepos } from "../../actions/profile";
+import { getGithubRepos } from '../../actions/profile';
 
 const ProfileRepos = ({
   profile: { githubusername },
   repos,
   getGithubRepos
 }) => {
+  const { t, i18n } = useTranslation();
   useEffect(() => {
     getGithubRepos(githubusername);
   }, [getGithubRepos, githubusername]);
@@ -46,7 +48,7 @@ const ProfileRepos = ({
           </div>
         ))
       ) : (
-        <p>No Github repos exists !!! </p>
+        <p>{t('NoGithub')} !!! </p>
       )}
     </div>
   );
@@ -59,7 +61,4 @@ ProfileRepos.propTypes = {
 const mapStateTopProps = state => ({
   repos: state.profile.repos
 });
-export default connect(
-  mapStateTopProps,
-  { getGithubRepos }
-)(ProfileRepos);
+export default connect(mapStateTopProps, { getGithubRepos })(ProfileRepos);

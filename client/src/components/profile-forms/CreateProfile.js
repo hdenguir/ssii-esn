@@ -12,6 +12,7 @@ const CreateProfile = props => {
     handleSubmit,
     handleChange,
     setFieldValue,
+    touched,
     values: {
       company,
       website,
@@ -50,7 +51,7 @@ const CreateProfile = props => {
             <option value="Intern">Intern</option>
             <option value="Other">Other</option>
           </select>
-          {errors.status && (
+          {errors.status && touched.status && (
             <span className="alert alert-danger">{errors.status}</span>
           )}
           <small className="form-text">
@@ -65,7 +66,7 @@ const CreateProfile = props => {
             value={company}
             onChange={e => handleChange(e)}
           />
-          {errors.company && (
+          {errors.company && touched.company && (
             <span className="alert alert-danger">{errors.company}</span>
           )}
           <small className="form-text">
@@ -261,8 +262,6 @@ const FormProfile = withFormik({
       youtube,
       instagram
     };
-
-    console.log(formData);
     props.createProfile(formData, props.history);
   }
 })(CreateProfile);
@@ -272,7 +271,4 @@ CreateProfile.propTypes = {
 };
 
 //const mapStateToProps = state => ({});
-export default connect(
-  null,
-  { createProfile }
-)(withRouter(FormProfile));
+export default connect(null, { createProfile })(withRouter(FormProfile));

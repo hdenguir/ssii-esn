@@ -1,12 +1,14 @@
-import React, { Fragment, useEffect } from "react";
-import { Link, withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { withFormik } from "formik";
-import * as Yup from "yup";
-import { createProfile, getCurrentProfile } from "../../actions/profile";
+import React, { Fragment, useEffect } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withFormik } from 'formik';
+import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
+import { createProfile, getCurrentProfile } from '../../actions/profile';
 
 const EditProfile = props => {
+  const { t, i18n } = useTranslation();
   let {
     errors,
     handleSubmit,
@@ -39,36 +41,35 @@ const EditProfile = props => {
 
   return (
     <Fragment>
-      <h1 className="large text-primary">Create Your Profile</h1>
+      <h1 className="large text-primary">Edit Your Profile</h1>
       <p className="lead">
-        <i className="fas fa-user"></i> Let's get some information to make your
-        profile stand out
+        <i className="fas fa-user"></i> {t('EditIntro')}
       </p>
-      <small>* = required field</small>
+      <small>* = {t('required')}</small>
       <form className="form" onSubmit={e => handleSubmit(e)}>
         <div className="form-group">
           <select name="status" value={status} onChange={e => handleChange(e)}>
-            <option value="0">* Select Professional Status</option>
-            <option value="Developer">Developer</option>
-            <option value="Junior Developer">Junior Developer</option>
-            <option value="Senior Developer">Senior Developer</option>
-            <option value="Manager">Manager</option>
-            <option value="Student or Learning">Student or Learning</option>
-            <option value="Instructor">Instructor or Teacher</option>
-            <option value="Intern">Intern</option>
-            <option value="Other">Other</option>
+            <option value="0">* {t('StatusPlaceholder')}</option>
+            <option value="Developer">{t('Developer')}</option>
+            <option value="Junior Developer">{t('JuniorDeveloper')}</option>
+            <option value="Senior Developer">{t('SeniorDeveloper')}</option>
+            <option value="Manager">{t('Manager')}</option>
+            <option value="Student or Learning">
+              {t('StudentOrLearning')}
+            </option>
+            <option value="Instructor">{t('InstructorOrTeacher')}</option>
+            <option value="Intern">{t('Intern')}</option>
+            <option value="Other">{t('Other')}</option>
           </select>
           {errors.status && (
             <span className="alert alert-danger">{errors.status}</span>
           )}
-          <small className="form-text">
-            Give us an idea of where you are at in your career
-          </small>
+          <small className="form-text">{t('StatusMessage')}</small>
         </div>
         <div className="form-group">
           <input
             type="text"
-            placeholder="Company"
+            placeholder={t('Company')}
             name="company"
             value={company}
             onChange={e => handleChange(e)}
@@ -76,45 +77,37 @@ const EditProfile = props => {
           {errors.company && (
             <span className="alert alert-danger">{errors.company}</span>
           )}
-          <small className="form-text">
-            Could be your own company or one you work for
-          </small>
+          <small className="form-text">{t('CompanyMessage')}</small>
         </div>
         <div className="form-group">
           <input
             type="text"
-            placeholder="Website"
+            placeholder={t('Website')}
             name="website"
             value={website}
             onChange={e => handleChange(e)}
           />
-          <small className="form-text">
-            Could be your own or a company website - {website}
-          </small>
+          <small className="form-text">{t('WebSiteMessage')}</small>
         </div>
         <div className="form-group">
           <input
             type="text"
-            placeholder="Location"
+            placeholder={t('Location')}
             name="location"
             value={location}
             onChange={e => handleChange(e)}
           />
-          <small className="form-text">
-            City & state suggested (eg. Boston, MA)
-          </small>
+          <small className="form-text">{t('LocationMessage')}</small>
         </div>
         <div className="form-group">
           <input
             type="text"
-            placeholder="* Skills"
+            placeholder={t('Skills')}
             name="skills"
             value={skills}
             onChange={e => handleChange(e)}
           />
-          <small className="form-text">
-            Please use comma separated values (eg. HTML,CSS,JavaScript,PHP)
-          </small>
+          <small className="form-text">{t('SkillsMessage')}</small>
         </div>
         <div className="form-group">
           <input
@@ -124,32 +117,29 @@ const EditProfile = props => {
             value={githubusername}
             onChange={e => handleChange(e)}
           />
-          <small className="form-text">
-            If you want your latest repos and a Github link, include your
-            username
-          </small>
+          <small className="form-text">{t('GithubMessage')}</small>
         </div>
         <div className="form-group">
           <textarea
-            placeholder="A short bio of yourself"
+            placeholder={t('BioPlaceholder')}
             name="bio"
             value={bio}
             onChange={e => handleChange(e)}
           ></textarea>
-          <small className="form-text">Tell us a little about yourself</small>
+          <small className="form-text">{t('BioMessage')}</small>
         </div>
 
         <div className="my-2">
           <button
             onClick={() =>
-              setFieldValue("showSocialsInputs", !showSocialsInputs)
+              setFieldValue('showSocialsInputs', !showSocialsInputs)
             }
             type="button"
             className="btn btn-light"
           >
-            Add Social Network Links
+            {t('AddSocialLinks')}
           </button>
-          <span>Optional</span>
+          <span>{t('Optional')}</span>
         </div>
         {showSocialsInputs && (
           <Fragment>
@@ -211,7 +201,7 @@ const EditProfile = props => {
         )}
         <input type="submit" className="btn btn-primary my-1" />
         <Link className="btn btn-light my-1" to="/dashboard">
-          Go Back
+          {t('GoBack')}
         </Link>
       </form>
     </Fragment>
@@ -225,19 +215,19 @@ const FormProfile = withFormik({
       const {
         profile: {
           profile: {
-            company = "",
-            status = "",
-            location = "",
-            githubusername = "",
-            website = "",
-            bio = "",
-            skills = "",
+            company = '',
+            status = '',
+            location = '',
+            githubusername = '',
+            website = '',
+            bio = '',
+            skills = '',
             social: {
-              twitter = "",
-              facebook = "",
-              linkedin = "",
-              youtube = "",
-              instagram = ""
+              twitter = '',
+              facebook = '',
+              linkedin = '',
+              youtube = '',
+              instagram = ''
             } = {}
           }
         }
@@ -259,24 +249,24 @@ const FormProfile = withFormik({
       };
     }
     return {
-      company: "",
-      website: "",
-      location: "",
-      status: "",
-      skills: "",
-      githubusername: "",
-      bio: "",
-      twitter: "",
-      facebook: "",
-      linkedin: "",
-      youtube: "",
-      instagram: "",
+      company: '',
+      website: '',
+      location: '',
+      status: '',
+      skills: '',
+      githubusername: '',
+      bio: '',
+      twitter: '',
+      facebook: '',
+      linkedin: '',
+      youtube: '',
+      instagram: '',
       showSocialsInputs: false
     };
   },
   validationSchema: Yup.object().shape({
-    company: Yup.string().required("Company is required"),
-    status: Yup.string().required("Status is required")
+    company: Yup.string().required('Company is required'),
+    status: Yup.string().required('Status is required')
   }),
   handleSubmit: async (values, { setSubmitting, setFieldValue, props }) => {
     const {
@@ -299,7 +289,7 @@ const FormProfile = withFormik({
       website,
       location,
       status,
-      skills: skills.join(","),
+      skills: skills.join(','),
       githubusername,
       bio,
       twitter,
@@ -321,7 +311,6 @@ EditProfile.propTypes = {
 const mapStateToProps = state => ({
   profile: state.profile
 });
-export default connect(
-  mapStateToProps,
-  { createProfile, getCurrentProfile }
-)(withRouter(FormProfile));
+export default connect(mapStateToProps, { createProfile, getCurrentProfile })(
+  withRouter(FormProfile)
+);

@@ -1,25 +1,27 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Moment from "react-moment";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Moment from 'react-moment';
+import { useTranslation } from 'react-i18next';
 
 const ProfileEducation = ({ profile: { education } }) => {
+  const { t, i18n } = useTranslation();
   return (
     <div className="profile-edu bg-white p-2">
-      <h2 className="text-primary">Education</h2>
+      <h2 className="text-primary">{t('EducationCredentials')}</h2>
       {education.length ? (
         education.map(edu => (
           <div key={edu._id}>
             <h3>{edu.school}</h3>
             <p>
-              <Moment format="MMM YYYY">{edu.from}</Moment> -{" "}
+              <Moment format="MMM YYYY">{edu.from}</Moment> -{' '}
               <Moment format="MMM YYYY">{edu.to}</Moment>
             </p>
             <p>
-              <strong>Degree: </strong>
+              <strong>{t('Degree')}: </strong>
               {edu.degree}
             </p>
             <p>
-              <strong>Field Of Study: </strong>
+              <strong>{t('FieldOfStudy')}: </strong>
               {edu.fieldofstudy}
             </p>
             <p>
@@ -29,7 +31,7 @@ const ProfileEducation = ({ profile: { education } }) => {
           </div>
         ))
       ) : (
-        <p>No education exists !!!</p>
+        <p>{t('NoEducation')} !!!</p>
       )}
     </div>
   );

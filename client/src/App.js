@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
+import "./i18n";
 import setAuthToken from "./utils/setAuthToken";
 
 import NavBar from "./components/layout/NavBar";
@@ -42,11 +42,11 @@ const App = () => {
       <Router>
         <Fragment>
           <NavBar />
-          <Route exact path="/" component={Landing} />
           <section className="container">
             <Alert />
             <Switch>
-              <Route path="/login" component={Login} />
+              <Route exact path="/" component={Landing} />
+              <Route exact path="/login" component={Login} />
               <Route path="/register" component={Register} />
               <Route path="/profiles" component={Profiles} />
               <Route path="/profile/:id" component={Profile} />
@@ -57,7 +57,7 @@ const App = () => {
               <PrivateRoute path="/add-education" component={AddEducation} />
               <PrivateRoute path="/posts" component={Posts} />
               <PrivateRoute path="/post/:id" component={PostSingle} />
-              <Route component={NotFound} />
+              <Route path="*" component={NotFound} />
             </Switch>
           </section>
         </Fragment>
