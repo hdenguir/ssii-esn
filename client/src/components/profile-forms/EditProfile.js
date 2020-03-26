@@ -1,22 +1,28 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
-import { createProfile, getCurrentProfile } from '../../actions/profile';
+
+import {
+  createProfile,
+  getCurrentProfile,
+} from '../../actions/profile';
+import Spinner from '../layout/Spinner';
 
 const EditProfile = props => {
-  const { t, i18n } = useTranslation();
-  let {
+  const { t } = useTranslation();
+  const {
     errors,
     handleSubmit,
     handleChange,
     setFieldValue,
     getCurrentProfile,
     loading,
-    values
+    values,
+    profile,
   } = props;
 
   const {
@@ -32,7 +38,7 @@ const EditProfile = props => {
     linkedin,
     youtube,
     instagram,
-    showSocialsInputs
+    showSocialsInputs,
   } = values;
 
   useEffect(() => {
@@ -40,29 +46,42 @@ const EditProfile = props => {
   }, [loading, getCurrentProfile]);
 
   return (
-    <Fragment>
+    <>
+      {profile.loading && <Spinner />}
       <h1 className="large text-primary">Edit Your Profile</h1>
       <p className="lead">
-        <i className="fas fa-user"></i> {t('EditIntro')}
+        <i className="fas fa-user" /> {t('EditIntro')}
       </p>
-      <small>* = {t('required')}</small>
+      <small>* ={t('required')}</small>
       <form className="form" onSubmit={e => handleSubmit(e)}>
         <div className="form-group">
-          <select name="status" value={status} onChange={e => handleChange(e)}>
-            <option value="0">* {t('StatusPlaceholder')}</option>
+          <select
+            name="status"
+            value={status}
+            onChange={e => handleChange(e)}
+          >
+            <option value="0">*{t('StatusPlaceholder')}</option>
             <option value="Developer">{t('Developer')}</option>
-            <option value="Junior Developer">{t('JuniorDeveloper')}</option>
-            <option value="Senior Developer">{t('SeniorDeveloper')}</option>
+            <option value="Junior Developer">
+              {t('JuniorDeveloper')}
+            </option>
+            <option value="Senior Developer">
+              {t('SeniorDeveloper')}
+            </option>
             <option value="Manager">{t('Manager')}</option>
             <option value="Student or Learning">
               {t('StudentOrLearning')}
             </option>
-            <option value="Instructor">{t('InstructorOrTeacher')}</option>
+            <option value="Instructor">
+              {t('InstructorOrTeacher')}
+            </option>
             <option value="Intern">{t('Intern')}</option>
             <option value="Other">{t('Other')}</option>
           </select>
           {errors.status && (
-            <span className="alert alert-danger">{errors.status}</span>
+            <span className="alert alert-danger">
+              {errors.status}
+            </span>
           )}
           <small className="form-text">{t('StatusMessage')}</small>
         </div>
@@ -75,7 +94,9 @@ const EditProfile = props => {
             onChange={e => handleChange(e)}
           />
           {errors.company && (
-            <span className="alert alert-danger">{errors.company}</span>
+            <span className="alert alert-danger">
+              {errors.company}
+            </span>
           )}
           <small className="form-text">{t('CompanyMessage')}</small>
         </div>
@@ -125,7 +146,7 @@ const EditProfile = props => {
             name="bio"
             value={bio}
             onChange={e => handleChange(e)}
-          ></textarea>
+          />
           <small className="form-text">{t('BioMessage')}</small>
         </div>
 
@@ -142,9 +163,9 @@ const EditProfile = props => {
           <span>{t('Optional')}</span>
         </div>
         {showSocialsInputs && (
-          <Fragment>
+          <>
             <div className="form-group social-input">
-              <i className="fab fa-twitter fa-2x"></i>
+              <i className="fab fa-twitter fa-2x" />
               <input
                 type="text"
                 placeholder="Twitter URL"
@@ -155,7 +176,7 @@ const EditProfile = props => {
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-facebook fa-2x"></i>
+              <i className="fab fa-facebook fa-2x" />
               <input
                 type="text"
                 placeholder="Facebook URL"
@@ -166,7 +187,7 @@ const EditProfile = props => {
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-youtube fa-2x"></i>
+              <i className="fab fa-youtube fa-2x" />
               <input
                 type="text"
                 placeholder="YouTube URL"
@@ -177,7 +198,7 @@ const EditProfile = props => {
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-linkedin fa-2x"></i>
+              <i className="fab fa-linkedin fa-2x" />
               <input
                 type="text"
                 placeholder="Linkedin URL"
@@ -188,7 +209,7 @@ const EditProfile = props => {
             </div>
 
             <div className="form-group social-input">
-              <i className="fab fa-instagram fa-2x"></i>
+              <i className="fab fa-instagram fa-2x" />
               <input
                 type="text"
                 placeholder="Instagram URL"
@@ -197,14 +218,14 @@ const EditProfile = props => {
                 onChange={e => handleChange(e)}
               />
             </div>
-          </Fragment>
+          </>
         )}
         <input type="submit" className="btn btn-primary my-1" />
         <Link className="btn btn-light my-1" to="/dashboard">
           {t('GoBack')}
         </Link>
       </form>
-    </Fragment>
+    </>
   );
 };
 
@@ -227,17 +248,17 @@ const FormProfile = withFormik({
               facebook = '',
               linkedin = '',
               youtube = '',
-              instagram = ''
-            } = {}
-          }
-        }
+              instagram = '',
+            } = {},
+          },
+        },
       } = props;
       return {
         company,
         website,
         location,
         status,
-        skills,
+        skills: skills.join(','),
         githubusername,
         bio,
         twitter,
@@ -245,7 +266,7 @@ const FormProfile = withFormik({
         linkedin,
         youtube,
         instagram,
-        showSocialsInputs: false
+        showSocialsInputs: false,
       };
     }
     return {
@@ -261,14 +282,14 @@ const FormProfile = withFormik({
       linkedin: '',
       youtube: '',
       instagram: '',
-      showSocialsInputs: false
+      showSocialsInputs: false,
     };
   },
   validationSchema: Yup.object().shape({
     company: Yup.string().required('Company is required'),
-    status: Yup.string().required('Status is required')
+    status: Yup.string().required('Status is required'),
   }),
-  handleSubmit: async (values, { setSubmitting, setFieldValue, props }) => {
+  handleSubmit: async (values, { setFieldValue, props }) => {
     const {
       company,
       website,
@@ -281,7 +302,7 @@ const FormProfile = withFormik({
       facebook,
       linkedin,
       youtube,
-      instagram
+      instagram,
     } = values;
 
     const formData = {
@@ -289,28 +310,30 @@ const FormProfile = withFormik({
       website,
       location,
       status,
-      skills: skills.join(','),
+      skills,
       githubusername,
       bio,
       twitter,
       facebook,
       linkedin,
       youtube,
-      instagram
+      instagram,
     };
     props.createProfile(formData, props.history, true);
-  }
+  },
 })(EditProfile);
 
 EditProfile.propTypes = {
   createProfile: PropTypes.func.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
-  profile: state.profile
+  profile: state.profile,
 });
-export default connect(mapStateToProps, { createProfile, getCurrentProfile })(
-  withRouter(FormProfile)
-);
+export default connect(mapStateToProps, {
+  createProfile,
+  getCurrentProfile,
+})(withRouter(FormProfile));

@@ -1,14 +1,14 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Moment from 'react-moment';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 const ListEducations = ({ education, deleteEducation }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const educations = education.map(edu => (
     <tr key={edu._id}>
       <td>
-        {edu.school} - {edu.id}
+        {edu.school} -{edu.id}
       </td>
       <td className="hide-sm">{edu.degree}</td>
       <td className="hide-sm">{edu.fieldofstudy}</td>
@@ -31,7 +31,7 @@ const ListEducations = ({ education, deleteEducation }) => {
     </tr>
   ));
   return (
-    <Fragment>
+    <>
       <h2 className="my-2">{t('EducationCredentials')}</h2>
       {education.length ? (
         <table className="table">
@@ -49,12 +49,12 @@ const ListEducations = ({ education, deleteEducation }) => {
       ) : (
         <p>{t('NoEducation')} !!!</p>
       )}
-    </Fragment>
+    </>
   );
 };
 
 ListEducations.propTypes = {
-  education: PropTypes.array.isRequired
+  education: PropTypes.array.isRequired,
 };
 
 export default ListEducations;

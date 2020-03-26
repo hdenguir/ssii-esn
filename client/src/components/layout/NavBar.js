@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -8,7 +8,6 @@ import { logout } from '../../actions/auth';
 
 const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const { t, i18n } = useTranslation();
-
   const changeLanguage = e => {
     i18n.changeLanguage(e.target.value);
   };
@@ -17,25 +16,26 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
     <ul>
       <li>
         <Link to="/dashboard">
-          <i className="fas fa-user"></i>{' '}
+          <i className="fas fa-home" />
           <span className="hide-sm">{t('Dashboard')}</span>
         </Link>
       </li>
       <li>
         <Link to="/posts">
-          <i className="fas fa-user"></i> <span className="hide-sm">Posts</span>
+          <i className="fas fa-blog" />
+          <span className="hide-sm">{t('Posts')}</span>
         </Link>
       </li>
       <li>
         <Link to="/profiles">
-          <i className="fas fa-user"></i>{' '}
-          <span className="hide-sm">Profiles</span>
+          <i className="fas fa-users" />{' '}
+          <span className="hide-sm">{t('Profiles')}</span>
         </Link>
       </li>
       <li>
         <Link onClick={logout} to="/">
-          <i className="fas fa-sign-out-alt"></i>{' '}
-          <span className="hide-sm">Logout</span>
+          <i className="fas fa-sign-out-alt" />{' '}
+          <span className="hide-sm">{t('Logout')}</span>
         </Link>
       </li>
     </ul>
@@ -43,13 +43,19 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const guestLinks = (
     <ul>
       <li>
-        <Link to="/profiles">{t('Developers')}</Link>
+        <Link to="/profiles">
+          <i className="fas fa-users" /> {t('Developers')}
+        </Link>
       </li>
       <li>
-        <Link to="/register">{t('Register')}</Link>
+        <Link to="/register">
+          <i className="fas fa-user-plus" /> {t('Register')}
+        </Link>
       </li>
       <li>
-        <Link to="/login">{t('Login')}</Link>
+        <Link to="/login">
+          <i className="fas fa-sign-in-alt" /> {t('Login')}
+        </Link>
       </li>
     </ul>
   );
@@ -58,17 +64,19 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
     <nav className="navbar bg-dark">
       <h1>
         <Link to="/">
-          <i className="fas fa-code"></i> MySocialy
+          <i className="fas fa-code" /> ESN & SSII
         </Link>
       </h1>
-      {!loading && (
-        <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
-      )}
+      {!loading && <>{isAuthenticated ? authLinks : guestLinks}</>}
       <ul>
         <li>
-          <select name="status" onChange={e => changeLanguage(e)}>
-            <option value="fr">FR</option>
-            <option value="en">EN</option>
+          <select
+            name="status"
+            value={i18n.language}
+            onChange={e => changeLanguage(e)}
+          >
+            <option value="fr-FR">FR</option>
+            <option value="en-US">EN</option>
           </select>
         </li>
       </ul>

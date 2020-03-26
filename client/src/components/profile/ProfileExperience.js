@@ -4,7 +4,7 @@ import Moment from 'react-moment';
 import { useTranslation } from 'react-i18next';
 
 const ProfileExperience = ({ profile: { experience } }) => {
-  const { t, i18 } = useTranslation();
+  const { t } = useTranslation();
   return (
     <>
       <div className="profile-exp bg-white p-2">
@@ -14,7 +14,9 @@ const ProfileExperience = ({ profile: { experience } }) => {
             <div key={exp._id}>
               <h3 className="text-dark">{exp.company}</h3>
               <p>
-                <Moment format="MMM YYYY">{exp.from}</Moment> -
+                <Moment format="MMM YYYY">{exp.from}</Moment>
+                {' '}
+                -
                 {!exp.to ? (
                   'Current'
                 ) : (
@@ -32,7 +34,11 @@ const ProfileExperience = ({ profile: { experience } }) => {
             </div>
           ))
         ) : (
-          <p>{t('NoExperience')} !!!</p>
+          <p>
+            {t('NoExperience')}
+            {' '}
+            !!!
+          </p>
         )}
       </div>
     </>

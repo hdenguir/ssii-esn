@@ -1,59 +1,40 @@
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { withFormik } from 'formik';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import { login } from '../../actions/auth';
-import Spinner from '../layout/Spinner';
 
 import * as Yup from 'yup';
+import { login } from '../../actions/auth';
+import Spinner from '../layout/Spinner';
+import SocialLogin from './SocialLogin';
+
 Yup.setLocale({
-  mixed: {
-    required: 'required'
-  },
-  string: {
-    min: 'minlength',
-    email: 'email'
-  }
+  mixed: { required: 'required' },
+  string: { min: 'minlength', email: 'email' }
 });
 
-let schema = Yup.object().shape({
-  email: Yup.string()
-    .email()
-    .required(),
-  password: Yup.string()
-    .min(6)
-    .required()
-});
+const Login = ({
+  values,
+  handleSubmit,
+  handleChange,
+  errors,
+  touched,
+  isAuthenticated,
+  loading
+}) => {
+  const { t } = useTranslation();
 
-const Login = props => {
-  const { t, i18n } = useTranslation();
-  const {
-    values,
-    handleSubmit,
-    handleChange,
-    errors,
-    touched,
-    isAuthenticated,
-    loading
-  } = props;
+  if (isAuthenticated) return <Redirect to="/dashboard" />;
 
-  if (isAuthenticated) {
-    return <Redirect to="/dashboard" />;
-  }
-
-  if (loading) {
-    return <Spinner />;
-  }
+  if (loading) return <Spinner />;
 
   return (
-    <Fragment>
+    <>
       <h1 className="large text-primary">{t('Login')}</h1>
       <p className="lead">
-        <i className="fas fa-user"></i> {t('SignInAccount')}
+        <i className="fas fa-user" /> {t('SignInAccount')}
       </p>
-
       <form className="form" onSubmit={e => handleSubmit(e)}>
         <div className="form-group">
           <input
@@ -64,7 +45,9 @@ const Login = props => {
             onChange={e => handleChange(e)}
           />
           {errors.email && touched.email && (
-            <span className="alert alert-danger">{t(errors.email)}</span>
+            <span className="alert alert-danger">
+              {t(errors.email)}
+            </span>
           )}
         </div>
         <div className="form-group">
@@ -82,26 +65,44 @@ const Login = props => {
             </span>
           )}
         </div>
-        <input type="submit" className="btn btn-primary" value={t('Login')} />
+        <input
+          type="submit"
+          className="btn btn-primary"
+          value={t('Login')}
+        />
       </form>
+
+      <div className="lead my">
+        <hr />
+        <SocialLogin />
+      </div>
 
       <p className="my-1">
         {t('DontAccount')} <Link to="/register">{t('SignUp')}</Link>
       </p>
-    </Fragment>
+    </>
   );
 };
 
 const loginForm = withFormik({
   mapPropsToValues: () => ({
-    email: 'haf2com@gmail.com',
+    email: 'demo@gmail.com',
     password: 'test123'
   }),
-  validationSchema: schema, //"Your password is longer than that", "Password is required"
-  handleSubmit: async (values, { setSubmitting, setFieldValue, props }) => {
+  validationSchema: Yup.object().shape({
+    email: Yup.string()
+      .email()
+      .required(),
+    password: Yup.string()
+      .min(6)
+      .required()
+  }),
+  handleSubmit: async (
+    values,
+    { setSubmitting, setFieldValue, props }
+  ) => {
     const { email, password } = values;
-    const user = { email, password };
-    props.login(user);
+    props.login({ email, password });
   }
 })(Login);
 

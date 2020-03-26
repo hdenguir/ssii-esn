@@ -1,7 +1,11 @@
-import uuid from "uuid";
-import * as actionTypes from "../actions/types";
+import uuid from 'uuid';
+import * as actionTypes from './types';
 
-export const setAlert = (msg, alertType, timer = 5000) => dispatch => {
+export const setAlert = (
+  msg,
+  alertType,
+  timer = 5000
+) => dispatch => {
   const id = uuid.v4();
   dispatch({
     type: actionTypes.SET_ALERT,

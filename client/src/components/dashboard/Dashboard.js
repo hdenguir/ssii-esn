@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -22,46 +22,52 @@ const Dashboard = ({
   deleteProfileItem,
   deleteAcount
 }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+
   useEffect(() => {
     getCurrentProfile();
-  }, [loading, getCurrentProfile]);
-  return loading && profile === null ? (
-    <Spinner />
-  ) : (
-    <Fragment>
+  }, [getCurrentProfile]);
+
+  if (loading && profile === null) return <Spinner />;
+
+  return (
+    <>
       <h1 className="large text-primary">{t('Dashboard')}</h1>
       <p className="lead">
-        {' '}
-        <i className="fas fa-user"></i> {t('Welcome')}{' '}
-        <strong>{user && user.name.toUpperCase()}</strong>
+        <i className="fas fa-user" /> {t('Welcome')}{' '}
+        <strong>
+          {user && user.name && user.name.toUpperCase()}
+        </strong>
       </p>
       {profile !== null ? (
-        <Fragment>
+        <>
           <DashboardActions />
           <ListExperiences
             deleteExperience={deleteProfileItem}
-            experience={profile.experience}
+            experience={profile && profile.experience}
           />
           <ListEducations
             deleteEducation={deleteProfileItem}
-            education={profile.education}
+            education={profile && profile.education}
           />
           <div className="my-2">
-            <button className="btn btn-danger" onClick={() => deleteAcount()}>
-              <i className="fas fa-user-minus"></i> {t('DeleteAccount')}
+            <button
+              className="btn btn-danger"
+              onClick={() => deleteAcount()}
+            >
+              <i className="fas fa-user-minus" /> {t('DeleteAccount')}
             </button>
           </div>
-        </Fragment>
+        </>
       ) : (
-        <Fragment>
-          <p>You have not yet setup a profile, please add some infos</p>
+        <>
+          <p>{t('YetProfile')}</p>
           <Link to="/create-profile" className="btn btn-primary my-1">
             {t('CreateProfile')}
           </Link>
-        </Fragment>
+        </>
       )}
-    </Fragment>
+    </>
   );
 };
 

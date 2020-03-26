@@ -43,7 +43,7 @@ const resources = {
       range: 'Please enter a value between {{min}} and {{max}}.',
       max: 'Please enter a value less than or equal to {{max}}.',
       min: 'Please enter a value greater than or equal to {{min}}.',
-      //ListEducations:
+      // ListEducations:
       Title: 'Title',
       FieldOfStudy: 'Field of study',
       Years: 'Years',
@@ -52,14 +52,16 @@ const resources = {
       AddEducation: 'Add Education',
       EducationCredentials: 'Education Credentials',
       NoEducation: 'No education found',
-      //ListExperiences:
+      // ListExperiences:
       Delete: 'Delete',
       Company: 'Company',
       AddExperience: 'Add Experience',
       ExperienceCredentials: 'Experience Credentials',
       // Edit Profile
-      EditIntro: "Let's get some information to make your profile stand out",
-      StatusMessage: 'Give us an idea of where you are at in your career',
+      EditIntro:
+        "Let's get some information to make your profile stand out",
+      StatusMessage:
+        'Give us an idea of where you are at in your career',
       CompanyMessage: 'Could be your own company or one you work for',
       WebSiteMessage: 'Could be your own or a company website',
       LocationMessage: 'City & state suggested (eg. Boston, MA)',
@@ -87,7 +89,7 @@ const resources = {
       Other: 'Other',
       // PostsList
       WelcomeCommunity: 'Welcome to the community!',
-      SaySomething: 'Say Something',
+      SaySomething: 'Say Something ...',
       CreatePost: 'Create a post',
       Submit: 'Submit',
       Posts: 'Posts',
@@ -99,7 +101,8 @@ const resources = {
       LeaveComment: 'Leave A Comment',
       CommentPost: 'Comment on this post',
       // Add education
-      AddEducationIntro: 'Add any school, bootcamp, etc that you have attended',
+      AddEducationIntro:
+        'Add any school, bootcamp, etc that you have attended',
       SchoolOrBootcamp: '* School or Bootcamp',
       DegreeOrCertificate: '* Degree or Certificate',
       ProgramDescription: 'Program Description',
@@ -109,8 +112,15 @@ const resources = {
       AddExperienceIntro:
         'Add any developer/programming positions that you have had in the past',
       JobTitle: '* Job Title',
-      JobDescription: 'Job Description'
-    }
+      JobDescription: 'Job Description',
+      LoginWith: 'Connect using',
+      YetProfile:
+        'You have not yet setup a profile, please add some infos',
+      // 404
+      PageNotFound: 'Page not found',
+      PageNotFoundSorry: 'Sorry, This page does not exists',
+      Logout: 'Logout',
+    },
   },
   fr: {
     translation: {
@@ -129,7 +139,8 @@ const resources = {
       EmailAddress: 'Adresse e-mail',
       AvatarMessage:
         'Ce site utilise Gravatar, donc si vous voulez une image de profil, utilisez un email Gravatar',
-      BrowseDevelopers: 'Parcourir et se connecter avec les développeurs',
+      BrowseDevelopers:
+        'Parcourir et se connecter avec les développeurs',
       NoProfilesFound: 'Aucun profil trouvé',
       welcomeMessage:
         "Créez un profil / portefeuille de développeurs, partagez des publications et obtenez l'aide d'autres développeurs",
@@ -142,19 +153,23 @@ const resources = {
       dateISO: 'Veuillez fournir une date valide (ISO).',
       number: 'Veuillez fournir un numéro valide.',
       digits: 'Veuillez fournir seulement des chiffres.',
-      creditcard: 'Veuillez fournir un numéro de carte de crédit valide.',
+      creditcard:
+        'Veuillez fournir un numéro de carte de crédit valide.',
       equalTo: 'Veuillez fournir encore la même valeur.',
       notEqualTo:
         'Veuillez fournir une valeur différente, les valeurs ne doivent pas être identiques.',
-      extension: 'Veuillez fournir une valeur avec une extension valide.',
+      extension:
+        'Veuillez fournir une valeur avec une extension valide.',
       maxlength: 'Veuillez fournir au plus {{max}} caractères.',
       minlength: 'Veuillez fournir au moins {{min}} caractères.',
       rangelength:
         'Veuillez fournir une valeur qui contient entre {{min}} et {{max}} caractères.',
       range: 'Veuillez fournir une valeur entre {{min}} et {{max}}.',
-      max: 'Veuillez fournir une valeur inférieure ou égale à {{max}}.',
-      min: 'Veuillez fournir une valeur supérieure ou égale à {{min}}.',
-      //ListEducations
+      max:
+        'Veuillez fournir une valeur inférieure ou égale à {{max}}.',
+      min:
+        'Veuillez fournir une valeur supérieure ou égale à {{min}}.',
+      // ListEducations
       Title: 'Titre',
       FieldOfStudy: 'Domaine d`étude',
       Years: 'Années',
@@ -163,7 +178,7 @@ const resources = {
       AddEducation: "Ajouter l'éducation",
       EducationCredentials: 'Éducation Credentials',
       NoEducation: 'Aucune éducation trouvée',
-      //ListExperiences
+      // ListExperiences
       Delete: 'Supprimer',
       Company: 'Entreprise',
       AddExperience: 'Ajouter une Expérience',
@@ -178,7 +193,8 @@ const resources = {
         'Peut être votre propre entreprise ou celle pour laquelle vous travaillez',
       WebSiteMessage:
         "Peut-être votre propre site Web ou celui de l'entreprise",
-      LocationMessage: 'Ville et État suggérés (par exemple, Boston, MA)',
+      LocationMessage:
+        'Ville et État suggérés (par exemple, Boston, MA)',
       SkillsMessage:
         'Veuillez utiliser des valeurs séparées par des virgules (par exemple, HTML, CSS, JavaScript, PHP)',
       GithubMessage:
@@ -203,7 +219,7 @@ const resources = {
       Other: 'Autre',
       // PostsList
       WelcomeCommunity: 'Bienvenue dans la communauté!',
-      SaySomething: 'Dis quelquechose',
+      SaySomething: 'Dis quelque chose ...',
       CreatePost: 'Créer un post',
       Submit: 'Envoyer',
       Posts: 'Liste des postes',
@@ -226,20 +242,27 @@ const resources = {
       AddExperienceIntro:
         'Ajoutez tous les postes de développeur / de programmation que vous avez occupés par le passé',
       JobTitle: '* Profession',
-      JobDescription: "Description de l'emploi"
-    }
-  }
+      JobDescription: "Description de l'emploi",
+      LoginWith: "Se connecter à l'aide de",
+      YetProfile:
+        "Vous n'avez pas encore crée votre profil, merci d'ajouter quelques infos",
+      // 404
+      PageNotFound: 'Page non trouvée',
+      PageNotFoundSorry: "Désolé, cette page n'existe pas",
+      Logout: 'Quitter',
+    },
+  },
 };
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources,
-    lng: navigator.language || 'en',
+    lng: navigator.language || 'en-US',
     keySeparator: false, // we do not use keys in form messages.welcome
     interpolation: {
-      escapeValue: false // react already safes from xss
-    }
+      escapeValue: false, // react already safes from xss
+    },
   });
 
 export default i18n;

@@ -1,9 +1,9 @@
-import * as actionTypes from "../actions/types";
+import * as actionTypes from '../actions/types';
 
 const initialState = {
   posts: [],
   post: null,
-  loading: true,
+  loading: false,
   error: {}
 };
 
@@ -20,15 +20,17 @@ export default function(state = initialState, action) {
     case actionTypes.POST_ERROR:
       return {
         ...state,
-        loading: false,
-        error: payload
+        loading: false
+        //error: payload,
       };
     case actionTypes.UPDATE_LIKES:
       return {
         ...state,
         loading: false,
         posts: state.posts.map(post =>
-          post._id === payload.id ? { ...post, likes: payload.likes } : post
+          post._id === payload.id
+            ? { ...post, likes: payload.likes }
+            : post
         )
       };
     case actionTypes.DELETE_POST:

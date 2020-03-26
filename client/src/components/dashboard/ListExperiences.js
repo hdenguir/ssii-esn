@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { useTranslation } from 'react-i18next';
 
 const ListExperiences = ({ experience, deleteExperience }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const experiences = experience.map(exp => (
     <tr key={exp._id}>
@@ -29,7 +29,7 @@ const ListExperiences = ({ experience, deleteExperience }) => {
     </tr>
   ));
   return (
-    <Fragment>
+    <>
       <h2 className="my-2">{t('ExperienceCredentials')}</h2>
       {experience.length ? (
         <table className="table">
@@ -46,7 +46,7 @@ const ListExperiences = ({ experience, deleteExperience }) => {
       ) : (
         <p>{t('NoExperience')} !!!</p>
       )}
-    </Fragment>
+    </>
   );
 };
 

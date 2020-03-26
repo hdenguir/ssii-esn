@@ -1,24 +1,16 @@
-import axios from "axios";
-import * as actionTypes from "../actions/types";
-import { setAlert } from "./alert";
+import * as actionTypes from './types';
+import { setNotify } from '../utils/alert';
+import http from '../utils/http';
 
 // Get Current user Profile
 export const getCurrentProfile = () => async dispatch => {
   try {
-    const res = await axios.get("/api/profile/me");
-    dispatch({
-      type: actionTypes.GET_PROFILE,
-      payload: res.data
-    });
+    const { data: payload } = await http.get('/api/profile/me');
+    dispatch({ type: actionTypes.GET_PROFILE, payload });
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors)
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    setNotify(err);
 
-    dispatch({
-      type: actionTypes.PROFILE_FAIL,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
+    dispatch({ type: actionTypes.PROFILE_FAIL });
   }
 };
 
@@ -26,60 +18,46 @@ export const getCurrentProfile = () => async dispatch => {
 export const getProfiles = () => async dispatch => {
   dispatch({ type: actionTypes.CLEAR_PROFILE });
   try {
-    const res = await axios.get("/api/profile");
-    dispatch({
-      type: actionTypes.GET_PROFILES,
-      payload: res.data
-    });
-  } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors)
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    const {
+      data: { results, profiles }
+    } = await http.get('/api/profile');
 
     dispatch({
-      type: actionTypes.PROFILE_FAIL,
-      payload: { msg: err.response.statusText, status: err.response.status }
+      type: actionTypes.GET_PROFILES,
+      payload: { results, profiles }
     });
+  } catch (err) {
+    setNotify(err);
+
+    dispatch({ type: actionTypes.PROFILE_FAIL });
   }
 };
 
 // Get Profile By User ID
 export const getProfileById = userID => async dispatch => {
   try {
-    const res = await axios.get("/api/profile/user/" + userID);
-    dispatch({
-      type: actionTypes.GET_PROFILE,
-      payload: res.data
-    });
+    const { data: payload } = await http.get(
+      `/api/profile/user/${userID}`
+    );
+    dispatch({ type: actionTypes.GET_PROFILE, payload });
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors)
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    setNotify(err);
 
-    dispatch({
-      type: actionTypes.PROFILE_FAIL,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
+    dispatch({ type: actionTypes.PROFILE_FAIL });
   }
 };
 
 // Get Github Repos
 export const getGithubRepos = username => async dispatch => {
   try {
-    const res = await axios.get("/api/profile/github/" + username);
-    dispatch({
-      type: actionTypes.GET_REPOS,
-      payload: res.data
-    });
+    const { data: payload } = await http.get(
+      `/api/profile/github/${username}`
+    );
+    dispatch({ type: actionTypes.GET_REPOS, payload });
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors)
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    setNotify(err);
 
-    dispatch({
-      type: actionTypes.PROFILE_FAIL,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
+    dispatch({ type: actionTypes.PROFILE_FAIL });
   }
 };
 
@@ -89,117 +67,86 @@ export const createProfile = (
   history,
   edit = false
 ) => async dispatch => {
+  dispatch({ type: actionTypes.LOADING });
   try {
-    const config = {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    };
+    const { data: payload } = await http.post(
+      '/api/profile',
+      formData
+    );
+    dispatch({ type: actionTypes.PROFILE_SUCCESS, payload });
 
-    const res = await axios.post("/api/profile", formData, config);
-    dispatch({
-      type: actionTypes.PROFILE_SUCCESS,
-      payload: res.data
-    });
+    setNotify(
+      edit ? 'Profile Updated' : 'Profile Created',
+      'success'
+    );
 
-    dispatch(setAlert(edit ? "Profile Updated" : "Profile Created", "success"));
-
-    if (!edit) history.push("/dashboard");
+    if (!edit) history.push('/dashboard');
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors)
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    setNotify(err);
 
-    dispatch({
-      type: actionTypes.PROFILE_FAIL,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
+    dispatch({ type: actionTypes.PROFILE_FAIL });
   }
 };
 
 // Add Experience / Add Education
-export const updateProfile = (formData, history, type) => async dispatch => {
+export const updateProfile = (
+  formData,
+  history,
+  type
+) => async dispatch => {
   try {
-    const config = {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    };
-
-    const res = await axios.put(
-      "/api/profile/" + type.toLowerCase(),
-      formData,
-      config
+    const { data: payload } = await http.put(
+      `/api/profile/${type.toLowerCase()}`,
+      formData
     );
 
-    dispatch({
-      type: actionTypes.UPDATE_PROFILE,
-      payload: res.data
-    });
+    dispatch({ type: actionTypes.UPDATE_PROFILE, payload });
 
-    dispatch(setAlert(`${type} Added`, "success"));
-    history.push("/dashboard");
+    setNotify(`${type} Added`, 'success');
+
+    history.push('/dashboard');
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors)
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    setNotify(err);
 
-    dispatch({
-      type: actionTypes.PROFILE_FAIL,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
+    dispatch({ type: actionTypes.PROFILE_FAIL });
   }
 };
 
 // Delete Experience / Delete Education
 export const deleteProfileItem = (id, type) => async dispatch => {
   try {
-    const res = await axios.delete(`/api/profile/${type.toLowerCase()}/${id}`);
+    const { data: payload } = await http.delete(
+      `/api/profile/${type.toLowerCase()}/${id}`
+    );
 
-    dispatch({
-      type: actionTypes.UPDATE_PROFILE,
-      payload: res.data
-    });
+    dispatch({ type: actionTypes.UPDATE_PROFILE, payload });
 
-    dispatch(setAlert(`${type} Deleted`, "success"));
-
-    //history.push("/dashboard");
+    setNotify(`${type} Deleted`, 'success');
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors)
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    setNotify(err);
 
-    dispatch({
-      type: actionTypes.PROFILE_FAIL,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
+    dispatch({ type: actionTypes.PROFILE_FAIL });
   }
 };
 
 // Delete Account & Profile
 export const deleteAcount = () => async dispatch => {
-  if (window.confirm("Are you sure? Thi cant Not be undone!")) {
+  if (window.confirm('Are you sure? Thi cant Not be undone!')) {
     try {
-      await axios.delete(`/api/profile`);
+      await http.delete('/api/profile');
 
       dispatch({ type: actionTypes.CLEAR_PROFILE });
 
       dispatch({ type: actionTypes.DELETE_ACCOUNT });
 
-      dispatch(
-        setAlert(`Your account has been permanantly Deleted`, "success")
+      setNotify(
+        'Your account has been permanantly Deleted',
+        'success'
       );
-
-      //history.push("/dashboard");
     } catch (err) {
-      const errors = err.response.data.errors;
-      if (errors)
-        errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+      setNotify(err);
 
-      dispatch({
-        type: actionTypes.PROFILE_FAIL,
-        payload: { msg: err.response.statusText, status: err.response.status }
-      });
+      dispatch({ type: actionTypes.PROFILE_FAIL });
     }
   }
 };

@@ -3,17 +3,19 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
-import { updateLike, deletePost } from '../../actions/post';
 import { useTranslation } from 'react-i18next';
+import { updateLike, deletePost } from '../../actions/post';
 
 const PostItem = ({
-  post: { _id, text, name, avatar, user, likes, comments, date },
+  post: {
+    _id, text, name, avatar, user, likes, comments, date,
+  },
   updateLike,
   deletePost,
   auth,
-  showActions
+  showActions,
 }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   return (
     <div className="post bg-white p-1 my-1">
       <div>
@@ -25,7 +27,9 @@ const PostItem = ({
       <div>
         <p className="my-1">{text}</p>
         <p className="post-date">
-          {t('PostedOn')} <Moment format="YYYY/MM/DD">{date}</Moment>
+          {t('PostedOn')}
+          {' '}
+          <Moment format="YYYY/MM/DD">{date}</Moment>
         </p>
         {showActions && (
           <>
@@ -34,7 +38,7 @@ const PostItem = ({
               className="btn btn-light"
               onClick={() => updateLike(_id, 'like')}
             >
-              <i className="fas fa-thumbs-up"></i>
+              <i className="fas fa-thumbs-up" />
               {likes.length > 0 && <span>{likes.length}</span>}
             </button>
             <button
@@ -42,10 +46,11 @@ const PostItem = ({
               className="btn btn-light"
               onClick={() => updateLike(_id, 'unlike')}
             >
-              <i className="fas fa-thumbs-down"></i>
+              <i className="fas fa-thumbs-down" />
             </button>
             <Link to={`/post/${_id}`} className="btn btn-primary">
-              Discussion{' '}
+              Discussion
+              {' '}
               {comments.length > 0 && (
                 <span className="comment-count">{comments.length}</span>
               )}
@@ -56,7 +61,7 @@ const PostItem = ({
                 className="btn btn-danger"
                 onClick={() => deletePost(_id)}
               >
-                <i className="fas fa-times"></i>
+                <i className="fas fa-times" />
               </button>
             )}
           </>
@@ -67,16 +72,16 @@ const PostItem = ({
 };
 
 PostItem.defaultProps = {
-  showActions: true
+  showActions: true,
 };
 
 PostItem.propTypes = {
   post: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   updateLike: PropTypes.func.isRequired,
-  deletePost: PropTypes.func.isRequired
+  deletePost: PropTypes.func.isRequired,
 };
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
 });
 export default connect(mapStateToProps, { updateLike, deletePost })(PostItem);

@@ -1,29 +1,37 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { updateProfile } from '../../actions/profile';
 
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import { updateProfile } from '../../actions/profile';
 
 const AddEducation = props => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const {
-    values: { school, degree, fieldofstudy, from, to, current, description },
+    values: {
+      school,
+      degree,
+      fieldofstudy,
+      from,
+      to,
+      current,
+      description,
+    },
     handleSubmit,
     handleChange,
-    errors
+    errors,
   } = props;
   return (
-    <Fragment>
+    <>
       <h1 className="large text-primary">{t('AddEducation')}</h1>
       <p className="lead">
-        <i className="fas fa-graduation-cap"></i>
+        <i className="fas fa-graduation-cap" />
         {t('AddEducationIntro')}
       </p>
-      <small>* = {t('required')}</small>
+      <small>* ={t('required')}</small>
       <form className="form" onSubmit={e => handleSubmit(e)}>
         <div className="form-group">
           <input
@@ -34,7 +42,9 @@ const AddEducation = props => {
             onChange={e => handleChange(e)}
           />
           {errors.school && (
-            <span className="alert alert-danger">{t(errors.school)}</span>
+            <span className="alert alert-danger">
+              {t(errors.school)}
+            </span>
           )}
         </div>
         <div className="form-group">
@@ -46,7 +56,9 @@ const AddEducation = props => {
             onChange={e => handleChange(e)}
           />
           {errors.degree && (
-            <span className="alert alert-danger">{t(errors.degree)}</span>
+            <span className="alert alert-danger">
+              {t(errors.degree)}
+            </span>
           )}
         </div>
         <div className="form-group">
@@ -67,7 +79,9 @@ const AddEducation = props => {
             onChange={e => handleChange(e)}
           />
           {errors.from && (
-            <span className="alert alert-danger">{t(errors.from)}</span>
+            <span className="alert alert-danger">
+              {t(errors.from)}
+            </span>
           )}
         </div>
         <div className="form-group">
@@ -98,7 +112,7 @@ const AddEducation = props => {
             placeholder={t('ProgramDescription')}
             value={description}
             onChange={e => handleChange(e)}
-          ></textarea>
+          />
         </div>
         <input
           type="submit"
@@ -109,7 +123,7 @@ const AddEducation = props => {
           {t('GoBack')}
         </Link>
       </form>
-    </Fragment>
+    </>
   );
 };
 
@@ -121,15 +135,18 @@ const FormExperience = withFormik({
     from: '',
     to: '',
     current: false,
-    description: ''
+    description: '',
   }),
   validationSchema: Yup.object().shape({
     school: Yup.string().required(),
     degree: Yup.string().required(),
     fieldofstudy: Yup.string().required(),
-    from: Yup.string().required()
+    from: Yup.string().required(),
   }),
-  handleSubmit: async (values, { setSubmitting, setFieldValue, props }) => {
+  handleSubmit: async (
+    values,
+    { setSubmitting, setFieldValue, props }
+  ) => {
     const {
       school,
       degree,
@@ -137,7 +154,7 @@ const FormExperience = withFormik({
       from,
       to,
       current,
-      description
+      description,
     } = values;
     const newEducation = {
       school,
@@ -146,14 +163,16 @@ const FormExperience = withFormik({
       from,
       to,
       current,
-      description
+      description,
     };
     props.updateProfile(newEducation, props.history, 'Education');
-  }
+  },
 })(AddEducation);
 
 AddEducation.propTypes = {
-  updateProfile: PropTypes.func.isRequired
+  updateProfile: PropTypes.func.isRequired,
 };
 
-export default connect(null, { updateProfile })(withRouter(FormExperience));
+export default connect(null, { updateProfile })(
+  withRouter(FormExperience)
+);

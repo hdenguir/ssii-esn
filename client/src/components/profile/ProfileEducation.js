@@ -4,7 +4,7 @@ import Moment from 'react-moment';
 import { useTranslation } from 'react-i18next';
 
 const ProfileEducation = ({ profile: { education } }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   return (
     <div className="profile-edu bg-white p-2">
       <h2 className="text-primary">{t('EducationCredentials')}</h2>
@@ -13,15 +13,26 @@ const ProfileEducation = ({ profile: { education } }) => {
           <div key={edu._id}>
             <h3>{edu.school}</h3>
             <p>
-              <Moment format="MMM YYYY">{edu.from}</Moment> -{' '}
+              <Moment format="MMM YYYY">{edu.from}</Moment>
+              {' '}
+              -
+              {' '}
               <Moment format="MMM YYYY">{edu.to}</Moment>
             </p>
             <p>
-              <strong>{t('Degree')}: </strong>
+              <strong>
+                {t('Degree')}
+                :
+                {' '}
+              </strong>
               {edu.degree}
             </p>
             <p>
-              <strong>{t('FieldOfStudy')}: </strong>
+              <strong>
+                {t('FieldOfStudy')}
+                :
+                {' '}
+              </strong>
               {edu.fieldofstudy}
             </p>
             <p>
@@ -31,14 +42,18 @@ const ProfileEducation = ({ profile: { education } }) => {
           </div>
         ))
       ) : (
-        <p>{t('NoEducation')} !!!</p>
+        <p>
+          {t('NoEducation')}
+          {' '}
+          !!!
+        </p>
       )}
     </div>
   );
 };
 
 ProfileEducation.propTypes = {
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired,
 };
 
 export default ProfileEducation;

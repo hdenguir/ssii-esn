@@ -1,14 +1,15 @@
 {
-  "name": "mysocialy",
+  "name": "ssii-ens",
   "version": "1.0.0",
-  "description": "Social Network for web developers",
+  "description": "SSII/ESN Network for web developers",
   "main": "index.js",
   "scripts": {
     "start": "node server",
     "server": "nodemon server",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "lint": "eslint client/src/**/*.js"
   },
   "keywords": [],
   "author": "",
@@ -27,10 +28,18 @@
   },
   "devDependencies": {
     "concurrently": "^4.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-flowtype": "^4.6.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
     "nodemon": "^1.18.11"
   },
   "engines": {
     "node": "10.16.3",
     "npm": "6.9.0"
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

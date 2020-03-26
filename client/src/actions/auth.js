@@ -1,90 +1,63 @@
-import * as actionTypes from "../actions/types";
-import axios from "axios";
-import { setAlert } from "./alert";
-
-import setAuthToken from "../utils/setAuthToken";
+import * as actionTypes from './types';
+import { setNotify } from '../utils/alert';
+import http from '../utils/http';
 
 // Load User
 export const loadUser = () => async dispatch => {
-  if (localStorage.getItem("token")) {
-    setAuthToken(localStorage.getItem("token"));
-  }
-
+  dispatch({ type: actionTypes.LOADING });
   try {
-    const res = await axios.get("/api/auth");
-    dispatch({
-      type: actionTypes.USER_LOADED,
-      payload: res.data
-    });
+    const { data: payload } = await http.get('/api/auth');
+
+    dispatch({ type: actionTypes.USER_LOADED, payload });
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors)
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
-    dispatch({
-      type: actionTypes.AUTH_FAIL
-    });
+    setNotify(err);
+
+    dispatch({ type: actionTypes.AUTH_FAIL });
   }
 };
 
 // Register User
-export const register = ({ name, email, password }) => async dispatch => {
+export const register = ({
+  name,
+  email,
+  password
+}) => async dispatch => {
   dispatch({ type: actionTypes.LOADING });
-  const config = {
-    headers: { "Content-Type": "application/json" }
-  };
 
   const body = JSON.stringify({ name, email, password });
 
   try {
-    const res = await axios.post("/api/users", body, config);
+    const { data: payload } = await http.post('/api/users', body);
 
-    dispatch({
-      type: actionTypes.REGISTER_SUCCESS,
-      payload: res.data
-    });
+    dispatch({ type: actionTypes.REGISTER_SUCCESS, payload });
 
     dispatch(loadUser());
 
-    dispatch(setAlert("User Registered successfully", "success"));
+    setNotify('User Registered successfully', 'success');
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors)
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    setNotify(err);
 
-    dispatch({
-      type: actionTypes.REGISTER_FAIL
-    });
+    dispatch({ type: actionTypes.REGISTER_FAIL });
   }
 };
 
 // Login User
 export const login = ({ email, password }) => async dispatch => {
   dispatch({ type: actionTypes.LOADING });
-  const config = {
-    headers: { "Content-Type": "application/json" }
-  };
 
   const body = JSON.stringify({ email, password });
-
   try {
-    const res = await axios.post("/api/auth", body, config);
+    const { data: payload } = await http.post('/api/auth', body);
 
-    dispatch({
-      type: actionTypes.LOGIN_SUCCESS,
-      payload: res.data
-    });
+    dispatch({ type: actionTypes.LOGIN_SUCCESS, payload });
 
     dispatch(loadUser());
 
-    dispatch(setAlert("User Logged in successfully", "success"));
+    setNotify('User Logged in successfully', 'success');
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors)
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    setNotify(err);
 
-    dispatch({
-      type: actionTypes.LOGIN_FAIL
-    });
+    dispatch({ type: actionTypes.LOGIN_FAIL });
   }
 };
 
@@ -92,4 +65,25 @@ export const login = ({ email, password }) => async dispatch => {
 export const logout = () => dispatch => {
   dispatch({ type: actionTypes.CLEAR_PROFILE });
   dispatch({ type: actionTypes.LOGOUT });
+};
+
+export const loginSocial = user => async dispatch => {
+  dispatch({ type: actionTypes.LOADING });
+
+  try {
+    const { data: payload } = await http.post(
+      '/api/auth/social-login/',
+      JSON.stringify(user)
+    );
+
+    dispatch({ type: actionTypes.LOGIN_SUCCESS, payload });
+
+    dispatch(loadUser());
+
+    setNotify('User Logged in successfully', 'success');
+  } catch (err) {
+    setNotify(err);
+
+    dispatch({ type: actionTypes.AUTH_FAIL });
+  }
 };

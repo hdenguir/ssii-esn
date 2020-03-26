@@ -2,15 +2,15 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { getPost } from '../../actions/post';
 import PostItem from './PostItem';
 import CommentForm from './CommentForm';
 import CommentsList from './CommentsList';
 import Spinner from '../layout/Spinner';
-import { useTranslation } from 'react-i18next';
 
 const PostSingle = ({ getPost, post: { post, loading }, match }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   useEffect(() => {
     getPost(match.params.id);
   }, [getPost, match.params.id]);
@@ -30,10 +30,10 @@ const PostSingle = ({ getPost, post: { post, loading }, match }) => {
 
 PostSingle.propTypes = {
   post: PropTypes.object.isRequired,
-  getPost: PropTypes.func.isRequired
+  getPost: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  post: state.post
+  post: state.post,
 });
 export default connect(mapStateToProps, { getPost })(PostSingle);

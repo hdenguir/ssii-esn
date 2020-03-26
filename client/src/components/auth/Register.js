@@ -1,27 +1,28 @@
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-//import PropTypes from "prop-types";
+
+// import PropTypes from "prop-types";
 
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 import Spinner from '../layout/Spinner';
+
 Yup.setLocale({
   mixed: {
     required: 'required',
-    oneOf: 'equalTo'
+    oneOf: 'equalTo',
   },
   string: {
     min: 'minlength',
-    email: 'email'
-  }
+    email: 'email',
+  },
 });
 const Register = props => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const {
     values,
     handleSubmit,
@@ -30,7 +31,7 @@ const Register = props => {
     touched,
     isSubmitting,
     isAuthenticated,
-    loading
+    loading,
   } = props;
 
   if (isAuthenticated) {
@@ -42,10 +43,10 @@ const Register = props => {
   }
 
   return (
-    <Fragment>
+    <>
       <h1 className="large text-primary">{t('SignUp')}</h1>
       <p className="lead">
-        <i className="fas fa-user"></i> {t('CreateAccount')}
+        <i className="fas fa-user" /> {t('CreateAccount')}
       </p>
       <form className="form" onSubmit={e => handleSubmit(e)}>
         <div className="form-group">
@@ -71,7 +72,9 @@ const Register = props => {
             onChange={e => handleChange(e)}
           />
           {errors.email && touched.email && (
-            <span className="alert alert-danger">{t(errors.email)}</span>
+            <span className="alert alert-danger">
+              {t(errors.email)}
+            </span>
           )}
           <small className="form-text">{t('AvatarMessage')}</small>
         </div>
@@ -114,7 +117,7 @@ const Register = props => {
       <p className="my-1">
         {t('HaveAccount')} <Link to="/login">{t('Login')}</Link>
       </p>
-    </Fragment>
+    </>
   );
 };
 
@@ -123,7 +126,7 @@ const formRegister = withFormik({
     name: '',
     email: '',
     password: '',
-    passwordConfirm: ''
+    passwordConfirm: '',
   }),
   validationSchema: Yup.object().shape({
     name: Yup.string()
@@ -138,9 +141,12 @@ const formRegister = withFormik({
     passwordConfirm: Yup.string()
       .min(6)
       .oneOf([Yup.ref('password'), null])
-      .required() //'Password confirm is required'
+      .required(), // 'Password confirm is required'
   }),
-  handleSubmit: async (values, { props, setSubmitting, setFieldValue }) => {
+  handleSubmit: async (
+    values,
+    { props, setSubmitting, setFieldValue }
+  ) => {
     const { register } = props;
 
     // Build New User Object
@@ -152,7 +158,7 @@ const formRegister = withFormik({
 
     // set Fields
     setSubmitting(false);
-  }
+  },
 })(Register);
 
 // Register.PropTypes = {
@@ -162,6 +168,8 @@ const formRegister = withFormik({
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  loading: state.auth.loading
+  loading: state.auth.loading,
 });
-export default connect(mapStateToProps, { setAlert, register })(formRegister);
+export default connect(mapStateToProps, { setAlert, register })(
+  formRegister
+);

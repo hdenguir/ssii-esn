@@ -10,14 +10,14 @@ const ProfileRepos = ({
   repos,
   getGithubRepos
 }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   useEffect(() => {
     getGithubRepos(githubusername);
   }, [getGithubRepos, githubusername]);
   return (
     <div className="profile-github">
       <h2 className="text-primary my-1">
-        <i className="fab fa-github"></i> Github Repos
+        <i className="fab fa-github" /> Github Repos
       </h2>
       {repos.length ? (
         repos.map(repo => (
@@ -42,7 +42,10 @@ const ProfileRepos = ({
                 <li className="badge badge-dark">
                   Watchers: {repo.watchers_count}
                 </li>
-                <li className="badge badge-light">Forks: {repo.forks_count}</li>
+                <li className="badge badge-light">
+                  Forks:
+                  {repo.forks_count}
+                </li>
               </ul>
             </div>
           </div>
@@ -61,4 +64,6 @@ ProfileRepos.propTypes = {
 const mapStateTopProps = state => ({
   repos: state.profile.repos
 });
-export default connect(mapStateTopProps, { getGithubRepos })(ProfileRepos);
+export default connect(mapStateTopProps, { getGithubRepos })(
+  ProfileRepos
+);

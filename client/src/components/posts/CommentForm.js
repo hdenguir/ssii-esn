@@ -5,19 +5,20 @@ import { withFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import { addComment, deleteComment } from '../../actions/post';
+
 Yup.setLocale({
   mixed: {
-    required: 'required'
-  }
+    required: 'required',
+  },
 });
 const CommentForm = ({
   values,
   errors,
   touched,
   handleSubmit,
-  handleChange
+  handleChange,
 }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   return (
     <div className="post-form">
       <div className="bg-primary p">
@@ -31,7 +32,7 @@ const CommentForm = ({
           placeholder={t('CommentPost')}
           value={values.text}
           onChange={e => handleChange(e)}
-        ></textarea>
+        />
         <input
           type="submit"
           className="btn btn-dark my-1"
@@ -47,26 +48,28 @@ const CommentForm = ({
 
 const FormComment = withFormik({
   mapPropsToValues: () => ({
-    text: ''
+    text: '',
   }),
   validationSchema: Yup.object().shape({
-    text: Yup.string().required()
+    text: Yup.string().required(),
   }),
   handleSubmit: async (
     values,
-    { setSubmitting, setFieldValue, resetForm, props }
+    {
+      setSubmitting, setFieldValue, resetForm, props,
+    },
   ) => {
     const { postId, addComment } = props;
     const { text } = values;
     const newComment = { text };
     addComment(postId, newComment);
     resetForm();
-  }
+  },
 })(CommentForm);
 
 CommentForm.propTypes = {
   addComment: PropTypes.func.isRequired,
-  deleteComment: PropTypes.func.isRequired
+  deleteComment: PropTypes.func.isRequired,
 };
 
 export default connect(null, { addComment, deleteComment })(FormComment);
