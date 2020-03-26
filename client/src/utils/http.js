@@ -4,7 +4,7 @@ import axios from 'axios';
 const defaultOptions = {
   baseURL:
     process.env.NODE_ENV === 'production'
-      ? 'https://my-socialy.herokuapp.com'
+      ? location.origin
       : 'http://localhost:5000',
   headers: { 'Content-Type': 'application/json' }
 };
