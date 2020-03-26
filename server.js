@@ -24,9 +24,9 @@ app.use('/api/users', routesUsers);
 app.use('/api/auth', routesAuth);
 app.use('/api/profile', routesProfile);
 app.use('/api/posts', routesPosts);
-app.use('/', (req, res) => {
-  res.status(200).json({ msg: 'API Runnning : Please use /api/*' });
-});
+// app.use('/', (req, res) => {
+//   res.status(200).json({ msg: 'API Runnning : Please use /api/*' });
+// });
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
