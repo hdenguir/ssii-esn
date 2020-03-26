@@ -16,25 +16,25 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
     <ul>
       <li>
         <Link to="/dashboard">
-          <i className="fas fa-home" />
+          <i className="fas fa-home m" />
           <span className="hide-sm">{t('Dashboard')}</span>
         </Link>
       </li>
       <li>
         <Link to="/posts">
-          <i className="fas fa-blog" />
+          <i className="fas fa-blog m" />
           <span className="hide-sm">{t('Posts')}</span>
         </Link>
       </li>
       <li>
         <Link to="/profiles">
-          <i className="fas fa-users" />{' '}
+          <i className="fas fa-users m" />
           <span className="hide-sm">{t('Profiles')}</span>
         </Link>
       </li>
       <li>
         <Link onClick={logout} to="/">
-          <i className="fas fa-sign-out-alt" />{' '}
+          <i className="fas fa-sign-out-alt m" />{' '}
           <span className="hide-sm">{t('Logout')}</span>
         </Link>
       </li>
@@ -44,17 +44,17 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
     <ul>
       <li>
         <Link to="/profiles">
-          <i className="fas fa-users" /> {t('Developers')}
+          <i className="fas fa-users m" /> {t('Developers')}
         </Link>
       </li>
       <li>
         <Link to="/register">
-          <i className="fas fa-user-plus" /> {t('Register')}
+          <i className="fas fa-user-plus m" /> {t('Register')}
         </Link>
       </li>
       <li>
         <Link to="/login">
-          <i className="fas fa-sign-in-alt" /> {t('Login')}
+          <i className="fas fa-sign-in-alt m" /> {t('Login')}
         </Link>
       </li>
     </ul>
@@ -67,7 +67,7 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
           <i className="fas fa-code" /> ESN & SSII
         </Link>
       </h1>
-      {!loading && <>{isAuthenticated ? authLinks : guestLinks}</>}
+      {isAuthenticated ? authLinks : guestLinks}
       <ul>
         <li>
           <select

@@ -13,10 +13,7 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case actionTypes.LOADING:
-      return {
-        ...state,
-        loading: true
-      };
+      return { ...state, loading: true };
     case actionTypes.GET_PROFILES:
     case actionTypes.PROFILE_SUCCESS:
       return {

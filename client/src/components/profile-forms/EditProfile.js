@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 import {
   createProfile,
-  getCurrentProfile,
+  getCurrentProfile
 } from '../../actions/profile';
 import Spinner from '../layout/Spinner';
 
@@ -22,7 +22,7 @@ const EditProfile = props => {
     getCurrentProfile,
     loading,
     values,
-    profile,
+    profile
   } = props;
 
   const {
@@ -38,7 +38,7 @@ const EditProfile = props => {
     linkedin,
     youtube,
     instagram,
-    showSocialsInputs,
+    showSocialsInputs
   } = values;
 
   useEffect(() => {
@@ -248,10 +248,10 @@ const FormProfile = withFormik({
               facebook = '',
               linkedin = '',
               youtube = '',
-              instagram = '',
-            } = {},
-          },
-        },
+              instagram = ''
+            } = {}
+          }
+        }
       } = props;
       return {
         company,
@@ -266,7 +266,7 @@ const FormProfile = withFormik({
         linkedin,
         youtube,
         instagram,
-        showSocialsInputs: false,
+        showSocialsInputs: false
       };
     }
     return {
@@ -282,12 +282,12 @@ const FormProfile = withFormik({
       linkedin: '',
       youtube: '',
       instagram: '',
-      showSocialsInputs: false,
+      showSocialsInputs: false
     };
   },
   validationSchema: Yup.object().shape({
     company: Yup.string().required('Company is required'),
-    status: Yup.string().required('Status is required'),
+    status: Yup.string().required('Status is required')
   }),
   handleSubmit: async (values, { setFieldValue, props }) => {
     const {
@@ -302,7 +302,7 @@ const FormProfile = withFormik({
       facebook,
       linkedin,
       youtube,
-      instagram,
+      instagram
     } = values;
 
     const formData = {
@@ -317,23 +317,23 @@ const FormProfile = withFormik({
       facebook,
       linkedin,
       youtube,
-      instagram,
+      instagram
     };
     props.createProfile(formData, props.history, true);
-  },
+  }
 })(EditProfile);
 
 EditProfile.propTypes = {
   createProfile: PropTypes.func.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  profile: state.profile,
+  profile: state.profile
 });
 export default connect(mapStateToProps, {
   createProfile,
-  getCurrentProfile,
+  getCurrentProfile
 })(withRouter(FormProfile));

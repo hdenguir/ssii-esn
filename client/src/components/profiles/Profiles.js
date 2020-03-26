@@ -9,21 +9,19 @@ import Pagination from '../layout/Pagination';
 import ProfileItem from './ProfileItem';
 import Spinner from '../layout/Spinner';
 
-const Profiles = ({
-  getProfiles,
-  profile: { profiles, loading }
-}) => {
+const Profiles = ({ getProfiles, profile }) => {
   const { t } = useTranslation();
   const [pageSize] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const { profiles, loading } = profile;
   useEffect(() => {
     getProfiles();
   }, [getProfiles]);
 
   const handlePageChange = page => setCurrentPage(page);
 
-  if (profiles.length === 0 && loading) return <Spinner />;
+  if (profile != null && profiles.length === 0 && loading)
+    return <Spinner />;
   const index = (currentPage - 1) * pageSize;
   const nextIndex = pageSize * currentPage;
 
@@ -32,7 +30,7 @@ const Profiles = ({
       <h1 className="large text-primary">{t('Developers')}</h1>
       <p className="lead">
         <i className="fab fa-connectdevelop" />
-        {` ${t('BrowseDevelopers')}`}
+        {t('BrowseDevelopers')}
       </p>
       {!!profiles.length && (
         <Pagination
