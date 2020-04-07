@@ -61,6 +61,30 @@ export const getGithubRepos = username => async dispatch => {
   }
 };
 
+export const updateProfilePhoto = (
+  formData,
+  history
+) => async dispatch => {
+  dispatch({ type: actionTypes.LOADING });
+  try {
+    http.defaults.headers['Content-type'] = 'multipart/form-data';
+    const { data: payload } = await http.post(
+      '/api/profile/photo/edit',
+      formData
+    );
+
+    dispatch({ type: actionTypes.PROFILE_SUCCESS, payload });
+
+    setNotify('Profile Photo Updated', 'success');
+
+    history.push('/dashboard');
+  } catch (err) {
+    setNotify(err);
+
+    dispatch({ type: actionTypes.PROFILE_FAIL });
+  }
+};
+
 // Create or update profile
 export const createProfile = (
   formData,

@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const path = require('path');
+const fileUpload = require('express-fileupload');
 
 const routesUsers = require('./routes/api/users');
 const routesAuth = require('./routes/api/auth');
@@ -16,6 +17,7 @@ connectDB();
 // Middlewares
 app.use(cors());
 app.use(express.json({ extended: false }));
+app.use(fileUpload());
 
 //app.get("/", (req, res) => res.send("API Runnning"));
 

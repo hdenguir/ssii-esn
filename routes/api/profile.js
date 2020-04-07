@@ -1,3 +1,5 @@
+const fs = require('fs');
+const md5 = require('md5');
 const express = require('express');
 const request = require('request');
 const config = require('config');
@@ -17,22 +19,74 @@ const router = express.Router();
 router.get('/me', auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({
-      user: req.user.id
+      user: req.user.id,
     }).populate('user', ['name', 'avatar']);
 
     if (!profile) {
-      // return res
-      //   .status(500)
-      //   .json({ errors: [{ msg: "There is no profile for this user" }] });
+      return res
+        .status(500)
+        .json({ errors: [{ msg: 'There is no profile for this user' }] });
     }
     return res.status(200).json(profile);
   } catch (error) {
     console.log(error.message);
     return res.status(400).json({
-      errors: [{ msg: err.message }]
+      errors: [{ msg: err.message }],
     });
   }
   res.send('Profile Route');
+});
+
+/* 
+/ @route  POST api/profile/photo
+/ @desc   update profile photo
+/ @access Private
+*/
+router.post('/photo/edit', auth, async (req, res) => {
+  if (!req.files) {
+    return res.status(400).json({ errors: [{ msg: 'No photo uploaded' }] });
+  } else {
+    const photo = req.files.photo;
+
+    const pathname = `${__dirname}/../../client/public/uploads/`;
+    const filename = `${pathname}${photo.name}`;
+    // Save image
+    photo.mv(filename, async err => {
+      if (err)
+        return res.status(400).json({ errors: [{ msg: 'No photo uploaded' }] });
+
+      // New name
+      const img_name = md5(Date.now()) + '.' + photo.name.split('.').pop();
+
+      // Delete existing photo
+      let currentProfile = await Profile.findOne({ user: req.user.id });
+      if (currentProfile.photo) {
+        fs.unlink(pathname + currentProfile.photo, err => {
+          if (err) {
+            return res
+              .status(400)
+              .json({ errors: [{ msg: 'Existing photo not deleted' }] });
+          }
+        });
+      }
+
+      // rename photo
+      fs.rename(filename, `${pathname}${img_name}`, function(err) {
+        if (err)
+          return res
+            .status(400)
+            .json({ errors: [{ msg: 'Error rename image' }] });
+      });
+
+      // Update photo
+      let profile = await Profile.findOneAndUpdate(
+        { user: req.user.id },
+        { $set: { photo: img_name } },
+        { new: true },
+      );
+      return res.json(profile);
+    });
+  }
 });
 
 /* 
@@ -50,17 +104,19 @@ router.post(
         .isEmpty(),
       check('skills', 'Skills is required')
         .not()
-        .isEmpty()
-    ]
+        .isEmpty(),
+    ],
   ],
   async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       return res.status(400).json({
-        errors: errors.array()
+        errors: errors.array(),
       });
     }
+
+    const profileFields = {};
 
     const {
       company,
@@ -74,11 +130,10 @@ router.post(
       facebook,
       twitter,
       instagram,
-      linkedin
+      linkedin,
     } = req.body;
 
     // Create Profile
-    const profileFields = {};
     profileFields.user = req.user.id;
     if (company) profileFields.company = company;
     if (website) profileFields.website = website;
@@ -105,7 +160,7 @@ router.post(
         profile = await Profile.findOneAndUpdate(
           { user: req.user.id },
           { $set: profileFields },
-          { new: true }
+          { new: true },
         );
 
         return res.json(profile);
@@ -119,10 +174,10 @@ router.post(
       return res.json(profile);
     } catch (err) {
       return res.status(400).json({
-        errors: [{ msg: err.message }]
+        errors: [{ msg: err.message }],
       });
     }
-  }
+  },
 );
 
 /* 
@@ -136,7 +191,7 @@ router.get('/', async (req, res) => {
 
     res.status(200).json({
       results: profiles.length,
-      profiles
+      profiles,
     });
   } catch (err) {
     console.log(err);
@@ -152,12 +207,12 @@ router.get('/', async (req, res) => {
 router.get('/user/:user_id', async (req, res) => {
   try {
     const profile = await Profile.findOne({
-      user: req.params.user_id
+      user: req.params.user_id,
     }).populate('user', ['name', 'avatar']);
 
     if (!profile)
       return res.status(400).json({
-        errors: [{ msg: 'There is no profile for this user' }]
+        errors: [{ msg: 'There is no profile for this user' }],
       });
 
     res.status(200).json(profile);
@@ -165,11 +220,11 @@ router.get('/user/:user_id', async (req, res) => {
     console.log(err);
     if (err.kind == 'ObjectId')
       return res.status(400).json({
-        errors: [{ msg: 'Profile not found' }]
+        errors: [{ msg: 'Profile not found' }],
       });
 
     return res.status(400).json({
-      errors: [{ msg: err.message }]
+      errors: [{ msg: err.message }],
     });
   }
 });
@@ -194,7 +249,7 @@ router.delete('/', auth, async (req, res) => {
     console.log(err);
 
     return res.status(400).json({
-      errors: [{ msg: err.message }]
+      errors: [{ msg: err.message }],
     });
   }
 });
@@ -215,8 +270,8 @@ router.put(
         .isEmpty(),
       check('from', 'From Date is required')
         .not()
-        .isEmpty()
-    ]
+        .isEmpty(),
+    ],
   ],
   async (req, res) => {
     // 1. Check Errors
@@ -232,7 +287,7 @@ router.put(
       from,
       to,
       current,
-      description
+      description,
     } = req.body;
 
     const newExeprience = {
@@ -242,7 +297,7 @@ router.put(
       from,
       to,
       current,
-      description
+      description,
     };
 
     // 3. Get profile & Update Experience
@@ -262,10 +317,10 @@ router.put(
       console.log(err);
 
       return res.status(400).json({
-        errors: [{ msg: err.message }]
+        errors: [{ msg: err.message }],
       });
     }
-  }
+  },
 );
 
 // @route  DELETE api/profile/experience/0
@@ -296,12 +351,12 @@ router.delete('/experience/:id', auth, async (req, res) => {
     experienceProfile.splice(expIndex, 1);
     profile.save();
 
-    res.json(profile);
+    res.status(204).json(profile);
   } catch (err) {
     console.log(err.message);
 
     return res.status(400).json({
-      errors: [{ msg: err.message }]
+      errors: [{ msg: err.message }],
     });
   }
 });
@@ -325,8 +380,8 @@ router.put(
         .isEmpty(),
       check('from', 'From Date is required')
         .not()
-        .isEmpty()
-    ]
+        .isEmpty(),
+    ],
   ],
   async (req, res) => {
     // 1. Check Errors
@@ -342,7 +397,7 @@ router.put(
       from,
       to,
       current,
-      description
+      description,
     } = req.body;
 
     const newEducation = {
@@ -352,7 +407,7 @@ router.put(
       from,
       to,
       current,
-      description
+      description,
     };
 
     // 3. Get profile & Update Education
@@ -372,10 +427,10 @@ router.put(
       console.log(err);
 
       return res.status(400).json({
-        errors: [{ msg: err.message }]
+        errors: [{ msg: err.message }],
       });
     }
-  }
+  },
 );
 
 // @route  DELETE api/profile/education/id
@@ -405,7 +460,7 @@ router.delete('/education/:id', auth, async (req, res) => {
     console.log(err.message);
 
     return res.status(400).json({
-      errors: [{ msg: err.message }]
+      errors: [{ msg: err.message }],
     });
   }
 });
@@ -419,10 +474,10 @@ router.get('/github/:username', async (req, res) => {
       uri: `https://api.github.com/users/${
         req.params.username
       }/repos?per_page=5&sort=created:asc&client_id=${config.get(
-        'GithubClientID'
+        'GithubClientID',
       )}&client_secret=${config.get('GithubClientSecret')}`,
       method: 'GET',
-      headers: { 'user-agent': 'node.js' }
+      headers: { 'user-agent': 'node.js' },
     };
 
     request(options, (error, response, body) => {
@@ -438,7 +493,7 @@ router.get('/github/:username', async (req, res) => {
     console.log(err.message);
 
     return res.status(400).json({
-      errors: [{ msg: err.message }]
+      errors: [{ msg: err.message }],
     });
   }
 });

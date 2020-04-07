@@ -33,11 +33,20 @@ const Dashboard = ({
   return (
     <>
       <h1 className="large text-primary">{t('Dashboard')}</h1>
-      <p className="lead">
-        <i className="fas fa-user" /> {t('Welcome')}{' '}
-        <strong>
-          {user && user.name && user.name.toUpperCase()}
-        </strong>
+      <p className="lead profile">
+        {profile.photo && (
+          <img
+            className="round-img"
+            src={`/uploads/${profile.photo}`}
+            alt="profile"
+          />
+        )}
+        <span>
+          <i className="fas fa-user" /> {t('Welcome')}{' '}
+          <strong>
+            {user && user.name && user.name.toUpperCase()}
+          </strong>
+        </span>
       </p>
       {profile !== null ? (
         <>

@@ -10,6 +10,7 @@ import {
   createProfile,
   getCurrentProfile
 } from '../../actions/profile';
+
 import Spinner from '../layout/Spinner';
 
 const EditProfile = props => {

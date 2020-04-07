@@ -11,6 +11,7 @@ import CreateProfile from '../profile-forms/CreateProfile';
 import EditProfile from '../profile-forms/EditProfile';
 import AddExperience from '../profile-forms/AddExperience';
 import AddEducation from '../profile-forms/AddEducation';
+import UpdatePhoto from '../profile-forms/UpdatePhoto';
 import PrivateRoute from '../routing/PrivateRoute';
 import Profiles from '../profiles/Profiles';
 import Profile from '../profile/Profile';
@@ -32,7 +33,12 @@ class NonLandingPages extends Component {
             <Route exact path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/profiles" component={Profiles} />
-            <Route path="/profile/:id" component={Profile} />
+            <Route exact path="/profile/:id" component={Profile} />
+            <PrivateRoute
+              exact
+              path="/profile/photo/edit"
+              component={UpdatePhoto}
+            />
             <PrivateRoute path="/dashboard" component={Dashboard} />
             <PrivateRoute
               path="/create-profile"

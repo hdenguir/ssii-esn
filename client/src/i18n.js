@@ -6,6 +6,7 @@ const resources = {
   en: {
     translation: {
       Dashboard: 'Dashboard',
+      AddPhoto: 'Update Photo',
       Welcome: 'Welcome',
       Developers: 'Developers',
       Register: 'Register',
@@ -119,12 +120,13 @@ const resources = {
       // 404
       PageNotFound: 'Page not found',
       PageNotFoundSorry: 'Sorry, This page does not exists',
-      Logout: 'Logout',
-    },
+      Logout: 'Logout'
+    }
   },
   fr: {
     translation: {
       Dashboard: 'Tableau de bord',
+      AddPhoto: 'Modifier la photo',
       Welcome: 'Bienvenue',
       Developers: 'Developpeurs',
       Register: "S'inscrire",
@@ -249,9 +251,9 @@ const resources = {
       // 404
       PageNotFound: 'Page non trouvée',
       PageNotFoundSorry: "Désolé, cette page n'existe pas",
-      Logout: 'Quitter',
-    },
-  },
+      Logout: 'Quitter'
+    }
+  }
 };
 
 i18n
@@ -261,8 +263,8 @@ i18n
     lng: navigator.language || 'en-US',
     keySeparator: false, // we do not use keys in form messages.welcome
     interpolation: {
-      escapeValue: false, // react already safes from xss
-    },
+      escapeValue: false // react already safes from xss
+    }
   });
 
 export default i18n;
