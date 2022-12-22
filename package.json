@@ -22,7 +22,7 @@
     "express-fileupload": "^1.1.9",
     "express-validator": "^5.3.1",
     "gravatar": "^1.8.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "md5": "^2.2.1",
     "mongoose": "^5.9.18",
     "prettier": "^1.19.1",
